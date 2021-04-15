@@ -9,7 +9,7 @@ def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, rev
 
 	# import coin pair data	
 	coin_pair = pd.read_csv(source, index_col=0)
-	# reverse data set
+	# reverse data set. data should be ordered from oldest to newest
 	if reverse:
 		coin_pair = coin_pair.iloc[::-1]
 
