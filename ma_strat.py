@@ -1,5 +1,5 @@
 
-def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False):
+def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, reverse: bool = False):
 	import pandas as pd
 	import matplotlib.pyplot as plt
 
@@ -10,7 +10,8 @@ def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False):
 	# import coin pair data	
 	coin_pair = pd.read_csv(source, index_col=0)
 	# reverse data set
-	coin_pair = coin_pair.iloc[::-1]
+	if reverse:
+		coin_pair = coin_pair.iloc[::-1]
 
 	# add two columns - moving average 10 and moving average 50
 	coin_pair[_ma_fast] = coin_pair[price_open_close].rolling(ma_fast).mean()
@@ -45,4 +46,4 @@ def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False):
 
 # main
 if __name__ == '__main__':
-	MA_strategy('Binance_BTCUSDT_1h.csv', 10, 50, False)
+	MA_strategy('Binance_BTCUSDT_1h.csv', 10, 50, False, True)
