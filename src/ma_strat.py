@@ -1,4 +1,5 @@
 import os
+
 def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, reverse: bool = False):
 	import pandas as pd
 	import matplotlib.pyplot as plt
@@ -42,8 +43,20 @@ def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, rev
 	# plot the wealth to show the growth of profit over the period
 	coin_pair['wealth'].plot()
 	plt.title('Total money you win is {}'.format(coin_pair.loc[coin_pair.index[-2], 'wealth']))
-	plt.show()
+	# plt.show()
+	return 'Total money you win is {}'.format(coin_pair.loc[coin_pair.index[-2], 'wealth'])
 
 # main
 if __name__ == '__main__':
-	MA_strategy('../data_temp/Binance_BTCUSDT_1h.csv', 10, 50, False, True)
+	import logging
+
+  # Configure logging
+	logging.basicConfig(
+			format='{asctime} - {name}: {levelname} $ {msg}',
+			style='{',
+			level=logging.INFO
+	)  
+
+	output = MA_strategy('../data_temp/Binance_BTCUSDT_1h.csv', 10, 50, False, True)
+	logging.info('MA_STRAT')
+	logging.info(output)
