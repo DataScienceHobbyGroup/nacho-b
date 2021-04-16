@@ -57,6 +57,6 @@ if __name__ == '__main__':
 			level=logging.INFO
 	)  
 
-	output = MA_strategy('../data_temp/Binance_BTCUSDT_1h.csv', 10, 50, False, True)
+	output = MA_strategy('Binance_BTCUSDT_1h.csv', 10, 50, False, True)
 	logging.info('MA_STRAT')
 	logging.info(output)
