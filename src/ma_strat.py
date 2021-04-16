@@ -46,4 +46,4 @@ def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, rev
 
 # main
 if __name__ == '__main__':
-	MA_strategy('../bot/Binance_BTCUSDT_1h.csv', 10, 50, False, True)
+	MA_strategy('../data_temp/Binance_BTCUSDT_1h.csv', 10, 50, False, True)
