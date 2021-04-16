@@ -15,5 +15,5 @@ docker build -t ma_strat .
 ### Docker run instructions
 To run the newly built image, rune the following command:
 ```bash
-docker run ma_strat python /src/ma_strat.py
+docker run --rm ma_strat python ma_strat.py
 ```
