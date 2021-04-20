@@ -11,7 +11,7 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    pip install pylint
+                    sh 'python -- version'
                     sh """
                     pylint **/*.py
                     """
