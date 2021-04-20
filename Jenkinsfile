@@ -11,7 +11,7 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    sh 'python -- version'
+                    sh 'python3 -- version'
                     sh """
                     pylint **/*.py
                     """
