@@ -3,15 +3,14 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '10')) // Retain history on the last 10 builds
         timestamps() // Append timestamps to each line
-        timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job
-        
+        timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job        
     }
-    agent { dockerfile true }
+    agent any
     stages {
         stage("Linting") {
             steps {
                 echo "Linting"
-                sh python3 --version
+                sh 'python3 --version'
                 script {
                     println pwd()
                     // sh '''
