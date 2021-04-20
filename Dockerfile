@@ -12,7 +12,8 @@ RUN chmod +x /tini
 RUN pip install -U \
 pip \
 setuptools \
-wheel
+wheel \
+pylint
 
 # Set working directory
 WORKDIR /project
@@ -27,6 +28,9 @@ RUN pip install -r requirements.txt
 
 # Copy files
 COPY . .
+
+# Lint files
+RUN pylint **/*.py
 
 # set user
 USER nacho

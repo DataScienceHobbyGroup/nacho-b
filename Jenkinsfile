@@ -6,7 +6,9 @@ pipeline {
         timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job
         
     }
-    agent any
+    agent {
+        dockerfile { filename 'Dockerfile'}
+    }
     stages {
         stage("Linting") {
             steps {
