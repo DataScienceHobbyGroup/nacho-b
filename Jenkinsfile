@@ -1,5 +1,4 @@
-def cmdArray = ["python", "-c", "import sys;", "print(".".join(map(str, sys.version_info[:3])))"]
-def cmd
+
 pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '10')) // Retain history on the last 10 builds
@@ -12,10 +11,7 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    cmd = cmdArray.execute()
-                    cmd.waitForOrKill(1000)
-                    println cmd.text
-                    // pip install pylint
+                    pip install pylint
                     sh """
                     pylint **/*.py
                     """
