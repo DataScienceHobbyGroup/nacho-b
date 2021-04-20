@@ -11,9 +11,11 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                sh """
-                pylint **/*.py
-                """
+                    python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'
+                    // pip install pylint
+                    sh """
+                    pylint **/*.py
+                    """
                 }
             }
         }
