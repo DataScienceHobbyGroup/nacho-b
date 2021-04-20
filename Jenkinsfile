@@ -12,11 +12,12 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    sh '''
-                        pip list
-                        which pip
-                        which python
-                    '''
+                    pwd()
+                    // sh '''
+                    //     pip list
+                    //     which pip
+                    //     which python
+                    // '''
                     // sh """
                     // pylint **/*.py
                     // """
