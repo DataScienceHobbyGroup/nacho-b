@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    pwd()
+                    println pwd()
                     // sh '''
                     //     pip list
                     //     which pip
