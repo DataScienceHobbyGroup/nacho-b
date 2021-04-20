@@ -1,4 +1,4 @@
-
+def pvy
 pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '10')) // Retain history on the last 10 builds
@@ -11,7 +11,8 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'
+                    pvy = "$(python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
+                    echo "$pyv"
                     // pip install pylint
                     sh """
                     pylint **/*.py
