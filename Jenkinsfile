@@ -12,11 +12,14 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    sh "apt-get install python"
-                    sh 'python3 -- version'
-                    sh """
-                    pylint **/*.py
-                    """
+                    sh '''
+                        pip list
+                        which pip
+                        which python
+                    '''
+                    // sh """
+                    // pylint **/*.py
+                    // """
                 }
             }
         }
