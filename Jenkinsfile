@@ -8,8 +8,8 @@ pipeline {
     agent any
     stages {
         stage("Linting") {
-            echo "Linting"
             steps {
+                echo "Linting"
                 script {
                 sh """
                 pylint **/*.py
