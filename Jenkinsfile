@@ -4,7 +4,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10')) // Retain history on the last 10 builds
         timestamps() // Append timestamps to each line
         timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job
-        sh "apt-get install python"
+        
     }
     agent any
     stages {
@@ -12,6 +12,7 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
+                    sh "apt-get install python"
                     sh 'python3 -- version'
                     sh """
                     pylint **/*.py
