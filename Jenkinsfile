@@ -11,7 +11,7 @@ pipeline {
         stage("Quality Control") {
             steps {
                 echo "Linting"
-                sh 'id'
+                sh 'pwd'
                 sh 'pylint */*.py'
             }
         }
