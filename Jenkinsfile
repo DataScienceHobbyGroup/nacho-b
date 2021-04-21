@@ -12,18 +12,7 @@ pipeline {
         stage("Linting") {
             steps {
                 echo "Linting"
-                sh 'node --version'
-                script {
-                    println pwd()
-                    // sh '''
-                    //     pip list
-                    //     which pip
-                    //     which python
-                    // '''
-                    // sh """
-                    // pylint **/*.py
-                    // """
-                }
+                sh 'id'
             }
         }
         stage('Unit Testing') { // Perform unit testing
