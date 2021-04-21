@@ -5,9 +5,7 @@ pipeline {
         timestamps() // Append timestamps to each line
         timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job        
     }
-    agent {
-        docker { image 'node:14-alpine' }
-    }
+    agent any
     stages {
         stage("Linting") {
             steps {
