@@ -35,7 +35,7 @@ def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, rev
 	# Plot a graph to show the Profit/Loss
 	coin_pair['profit'].plot()
 	plt.axhline(y=0, color='red')
-	plt.show()
+	# plt.show()
 
 	# Use .cumsum() to calculate the accumulated wealth over the period
 	coin_pair['wealth'] = coin_pair['profit'].cumsum()
@@ -43,7 +43,7 @@ def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, rev
 	# plot the wealth to show the growth of profit over the period
 	coin_pair['wealth'].plot()
 	plt.title('Total money you win is {}'.format(coin_pair.loc[coin_pair.index[-2], 'wealth']))
-	plt.show()
+	# plt.show()
 	return 'Total money you win is {}'.format(coin_pair.loc[coin_pair.index[-2], 'wealth'])
 
 # main
