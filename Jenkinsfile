@@ -8,7 +8,7 @@ pipeline {
     agent none
     stages {        
         stage("Quality Control") {
-            agent { label "nacho-python-agent"}
+            agent { label "nacho"}
             steps {
                 echo "Linting"
                 sh 'python3 --version'
