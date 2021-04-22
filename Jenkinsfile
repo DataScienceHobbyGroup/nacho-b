@@ -6,13 +6,12 @@ pipeline {
         timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job        
     }
     agent any
-    stages {
-        
+    stages {        
         stage("Quality Control") {
             steps {
                 echo "Linting"
-                sh 'pwd'
-                sh 'pylint */*.py'
+                sh 'pip --version'
+                // sh 'pylint */*.py'
             }
         }
         stage('Unit Testing') { // Perform unit testing
