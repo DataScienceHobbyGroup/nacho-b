@@ -10,7 +10,7 @@ pipeline {
         stage("Quality Control") {
             steps {
                 echo "Linting"
-                sh 'pip --version'
+                sh 'python -c "print(1)"'
                 // sh 'pylint */*.py'
             }
         }
