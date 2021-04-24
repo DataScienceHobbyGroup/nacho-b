@@ -5,14 +5,15 @@ pipeline {
         timestamps() // Append timestamps to each line
         timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job        
     }
-    agent none
+    agent any
     stages {        
         stage("Quality Control") {
-            agent { label "nacho"}
+            // agent { label "nacho"}
             steps {
                 echo "Linting"
-                sh 'python3 --version'
-                // sh 'pylint */*.py'
+                script {
+                    println(hudson.remoting.Base64.encode(org.jenkinsci.main.modules.instance_identity.InstanceIdentity.get().getPublic().getEncoded()))
+                }
             }
         }
         // stage('Unit Testing') { // Perform unit testing
