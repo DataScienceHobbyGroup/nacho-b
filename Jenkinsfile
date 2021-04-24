@@ -12,7 +12,8 @@ pipeline {
             steps {
                 echo "Linting"
                 script {
-                    println(hudson.remoting.Base64.encode(org.jenkinsci.main.modules.instance_identity.InstanceIdentity.get().getPublic().getEncoded()))
+                    def secret = hudson.remoting.Base64.encode(org.jenkinsci.main.modules.instance_identity.InstanceIdentity.get().getPublic().getEncoded())
+                    println(secret)
                 }
             }
         }
