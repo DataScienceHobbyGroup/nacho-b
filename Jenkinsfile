@@ -5,10 +5,10 @@ pipeline {
         timestamps() // Append timestamps to each line
         timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job        
     }
-    agent any
+    agent none
     stages {        
         stage("Quality Control") {
-            // agent { label "nacho"}
+            agent { label "nacho"}
             steps {
                 echo "Linting"
                 script {
