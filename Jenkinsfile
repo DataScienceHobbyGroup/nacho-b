@@ -12,6 +12,7 @@ pipeline {
             steps {
                 echo "Linting"
                 sh "pip3 install pylint"
+                sh "pylint **/*.py"
             }
         }
         // stage('Unit Testing') { // Perform unit testing
