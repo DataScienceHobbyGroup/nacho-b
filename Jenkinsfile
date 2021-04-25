@@ -11,10 +11,7 @@ pipeline {
             agent { label "nacho"}
             steps {
                 echo "Linting"
-                script {
-                    def secret = hudson.remoting.Base64.encode(org.jenkinsci.main.modules.instance_identity.InstanceIdentity.get().getPublic().getEncoded())
-                    println(secret)
-                }
+                pip3 install pylint
             }
         }
         // stage('Unit Testing') { // Perform unit testing
