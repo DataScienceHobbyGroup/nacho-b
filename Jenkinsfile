@@ -11,7 +11,7 @@ pipeline {
             agent { label "nacho"}
             steps {
                 echo "Linting"
-                pip3 install pylint
+                sh "pip3 install pylint"
             }
         }
         // stage('Unit Testing') { // Perform unit testing
