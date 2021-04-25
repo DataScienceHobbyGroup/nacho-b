@@ -1,5 +1,3 @@
-import os
-
 def MA_strategy(source: str, ma_fast: int, ma_slow: int, open: bool = False, reverse: bool = False):
 	import pandas as pd
 	import matplotlib.pyplot as plt
