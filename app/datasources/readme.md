@@ -1,0 +1,1 @@
+This folder contains classes that pull data in from various sources and transform it into a standard format so that it can be read by the program.
