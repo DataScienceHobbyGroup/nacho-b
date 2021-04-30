@@ -7,7 +7,7 @@ class binance_csv:
     '''
 
     #Whether or not to reverse the data
-    REVERSE = False
+    REVERSE = True
     
     #Empty object to store the pandas dataframe
     data = []
@@ -20,4 +20,4 @@ class binance_csv:
 	    
         # reverse data set. data should be ordered from oldest to newest
         if self.REVERSE:
-    	    self.data = coin_pair.iloc[::-1]
+    	    self.data = self.data.iloc[::-1]
