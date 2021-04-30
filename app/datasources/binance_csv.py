@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import pandas as pd
 
 class binance_csv:
@@ -21,3 +24,6 @@ class binance_csv:
         # reverse data set. data should be ordered from oldest to newest
         if self.REVERSE:
     	    self.data = self.data.iloc[::-1]
+
+        reverse = "Data was reversed." if self.REVERSE else "Data was not reversed."
+        logger.info(f"Read {self.data.shape} from {path} successfully. {reverse}")
