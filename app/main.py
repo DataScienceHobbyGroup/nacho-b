@@ -2,6 +2,7 @@ import logging
 
 from datasources.binance_csv import binance_csv
 from strategies.moving_average import moving_average
+from strategies.dca import dca
 from exchanges.fake_exchange import fake_exchange
 
 # Entrypoint
@@ -24,11 +25,17 @@ if __name__ == '__main__':
     exchange = fake_exchange(0)
 
     # Pick a strategy, and give it our exchange and data
-    strategy = moving_average(data_source, exchange)
+    strategy_ma = moving_average(data_source, exchange)
+
+    strategy_dca = dca(data_source, exchange)
 
     # Vamonos
-    output = strategy.run(10, 50, False)
-    logging.info(output.trading_summary())
+    #output_ma = strategy_ma.run(10, 50, False)
+    #logging.info(output_ma.trading_summary())
+
+    number = 24*30*4
+    output_dca = strategy_dca.run(number, number)
+    logging.info(output_dca.trading_summary())
 
 
 

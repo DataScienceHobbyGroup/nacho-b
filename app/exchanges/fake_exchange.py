@@ -31,8 +31,8 @@ class fake_exchange:
 
     def sell(self, qty, value):
         ''' Sell a number of the security at its current value '''
-        amount_to_award = (qty * value) - self.TRANSACTION_COST_FIXED
-        self.current_balance -= qty
+        amount_to_award = (qty() * value) - self.TRANSACTION_COST_FIXED
+        self.current_balance -= qty()
         self.profit_loss += amount_to_award
         self.num_sales += 1
         logger.info(f"Exchange recieved and fulfilled a request to sell {qty} {self.SECURITY} for {amount_to_award}")
