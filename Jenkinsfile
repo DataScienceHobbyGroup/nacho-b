@@ -11,6 +11,15 @@ pipeline {
             steps {
                 checkout scm
             }
+        }
+        stage('Upgrade') {
+            steps {
+                script {
+                    sh """
+                    apk update && apk upgrade
+                    """
+                }
+            }            
         }     
         // stage("Linting") {
         //     steps {
@@ -23,6 +32,7 @@ pipeline {
             steps {
                 echo "Add testing"
                 script {
+
                     sh """
                     pip install -r requirements.txt
                     """
