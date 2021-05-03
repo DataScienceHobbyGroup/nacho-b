@@ -5,26 +5,30 @@ pipeline {
         timestamps() // Append timestamps to each line
         timeout(time: 20, unit: 'MINUTES') // Set a timeout on the total execution time of the job        
     }
-    agent none
-    stages {        
-        stage("Quality Control") {
-            agent { label "nacho"}
+    agent { label "nacho"}
+    stages {   
+        stage('Checkout') {
             steps {
-                echo "Linting"
-                sh "pip3 install pylint"
-                sh "pylint *.py"
+                checkout scm
             }
-        }
-        // stage('Unit Testing') { // Perform unit testing
+        }     
+        // stage("Linting") {
         //     steps {
-        //         echo "Add testing"
-        //         // script {
-        //         //     sh """
-        //         //     python -m unittest discover -s tests/unit
-        //         //     """
-        //         // }
+        //         echo "Linting"
+        //         sh "pip3 install pylint"
+        //         sh "pylint *.py"
         //     }
         // }
+        stage('Unit Testing') { // Perform unit testing
+            steps {
+                echo "Add testing"
+                script {
+                    sh """
+                    python -m unittest discover -s tests/unit
+                    """
+                }
+            }
+        }
         // stage('Integration Testing') { //Perform integration testing
         //     steps {
         //         echo "add integration testing"
