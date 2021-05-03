@@ -6,6 +6,7 @@ from app.datasources.ticker_scraper import TickerScraper
 
 class Testing(unittest.TestCase):
   VALID_URL = r'(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?'
+  VALID_ACRONYM = r'[A-Z][A-Zota.]+[A-Z.]'
   ts = TickerScraper()
 
   def test_read_in_site_list(self):
@@ -27,8 +28,14 @@ class Testing(unittest.TestCase):
     self.assertEqual(type(list_of_tickers), type([]))
     print('list is not empty')
     self.assertTrue(len(list_of_tickers) > 0)
-    print('contains valid tickers', list_of_tickers)
+    print("contains valid acronyms")
+    for ticker in list_of_tickers:
+      self.assertTrue(len(re.findall(self.VALID_ACRONYM, ticker)) > 0)
+    print('contains valid tickers')
     self.assertIn('BTC-USD', list_of_tickers)
+    self.assertIn('ETH-USD', list_of_tickers)
+    self.assertIn('ADA-USD', list_of_tickers)
+    self.assertIn('NANO-USD', list_of_tickers)
     print('Finished testing scrape tickers')
 
 if __name__ == '__main__':
