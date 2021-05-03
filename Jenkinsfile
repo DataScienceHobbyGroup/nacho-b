@@ -24,6 +24,9 @@ pipeline {
                 echo "Add testing"
                 script {
                     sh """
+                    pip install -r requirements.txt
+                    """
+                    sh """
                     python -m unittest discover -s tests/unit
                     """
                 }
