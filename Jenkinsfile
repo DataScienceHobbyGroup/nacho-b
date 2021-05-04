@@ -18,6 +18,14 @@ pipeline {
                     sh """
                     apk update && apk upgrade
                     """
+                    sh """
+                    apk add --update --no-cache --virtual .build-deps \
+                        g++ \
+                        python-dev \
+                        libxml2 \
+                        libxml2-dev && \
+                    apk add libxslt-dev
+                    """
                 }
             }            
         }     
