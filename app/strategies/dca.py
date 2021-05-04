@@ -28,6 +28,6 @@ class dca:
                 exchange.buy(buy_qty,row[1]['close'])
             count += 1
         
-        exchange.sell(exchange.get_current_balance, coin_pair.iloc[-1]['close'])
+        exchange.sell(exchange.get_current_balance(), coin_pair.iloc[-1]['close'])
 
         return exchange

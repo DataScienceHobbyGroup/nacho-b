@@ -30,8 +30,8 @@ if __name__ == '__main__':
     strategy_dca = dca(data_source, exchange)
 
     # Vamonos
-    #output_ma = strategy_ma.run(10, 50, False)
-    #logging.info(output_ma.trading_summary())
+    output_ma = strategy_ma.run(10, 50, False)
+    logging.info(output_ma.trading_summary())
 
     number = 24*30*4
     output_dca = strategy_dca.run(number, number)
