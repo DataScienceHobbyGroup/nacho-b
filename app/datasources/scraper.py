@@ -11,8 +11,7 @@ class scraper:
           _classes = soup.find_all(class_ = _class)
           tickers = [tick.text for tick in _classes]
           data = {'Tickers':tickers}
-          # info = pd.DataFrame(data, columns=['Tickers'])
-          return tickers # info['Tickers']
+          return tickers
         except:
           print('Failed to scrape')
       else:
