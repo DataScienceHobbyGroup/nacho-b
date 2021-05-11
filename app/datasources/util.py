@@ -6,7 +6,13 @@ from typing import List, Dict
 pattern = 'startTime+=([0-9]+)'
 SECONDS_TO_DAYS = 86400
 SEVEN_DAYS = 7
-# The yahoo finance api only returns 7 days of 1 minute data ata a time.
+INTERVALS = ['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
+TODAY_MINUS_SEVEN = 6
+TODAY_MINUS_SIXTY = 59
+TODAY_MINUS_SEVEN_THIRTY = 729
+
+
+# The yahoo finance api only returns 7 days of 1 minute data at a time.
 # Therefore we need to first capture the starting point for each ticker
 # as Yahoo has not got the same starting point for each.
 # Luckily enough if we call for the one minute data entirely then we get
@@ -19,7 +25,7 @@ SEVEN_DAYS = 7
 # BTC-USD has 2424 days of data. Thats 2424/7(limit) or ~347 API calls.
 # There are ~3,000 symbols. If we take worst case, they all have ~347 
 # API calls thats ~3,000 x ~347 = ~1.05mm calls. So it would take ~520 
-# hours or ~22 daysto get the entire set. The utility should provide a 
+# hours or ~22 days to get the entire set. The utility should provide a 
 # parsing method for the start date, a time calculation method for 
 # returning a list of time periods to request and a limitation function
 # to help ensure the system does not go over the rate limit.
@@ -27,7 +33,7 @@ SEVEN_DAYS = 7
 def parse_historical_start_date(errorMsg:str) -> str:
   return (re.findall(pattern, errorMsg))[0]
 
-def calculate_time_periods_for_ticker(startDate:str):
+def calculate_time_periods_for_ticker(startDate:str) -> Dict:
   start_s = datetime.datetime.strptime(time.ctime(float(startDate)), "%a %b %d %H:%M:%S %Y")
   now = time.time()
   duration_in_seconds = now - float(startDate)
@@ -45,12 +51,37 @@ def calculate_time_periods_for_ticker(startDate:str):
 
 def rate_limiter(limit:float=None) -> None:
   if limit == None:
-    time.sleep(1.818)
+    time.sleep(1.818) # 1.818 specific to yahoo rate limits
   else:
     time.sleep(limit)
   pass
 
+def date_range(interval:str=None) -> Dict:
+  seven = ['1m']
+  sixty = ['2m', '5m', '15m', '30m', '90m']
+  seven_three_zero = ['60m', '1h']
+  start_s = None
+  look_back = None
+  interval_ = interval
+  if interval not in INTERVALS:
+    return {'error': f'{interval} is invalid', 'allowed_values': INTERVALS}
+  elif interval in seven:
+    start_s = datetime.datetime.strptime(time.ctime(float(time.time())), "%a %b %d %H:%M:%S %Y")
+    look_back = start_s - datetime.timedelta(days=TODAY_MINUS_SEVEN)
+  elif interval in sixty:
+    start_s = datetime.datetime.strptime(time.ctime(float(time.time())), "%a %b %d %H:%M:%S %Y")
+    look_back = start_s - datetime.timedelta(days=TODAY_MINUS_SIXTY)
+  elif interval in seven_three_zero:
+    start_s = datetime.datetime.strptime(time.ctime(float(time.time())), "%a %b %d %H:%M:%S %Y")
+    look_back = start_s - datetime.timedelta(days=TODAY_MINUS_SEVEN_THIRTY)
+  else:
+    return {'period': 'max', 'interval': interval_}
+  return {'start': look_back.strftime('%Y-%m-%d'), 'end': start_s.strftime('%Y-%m-%d'), 'interval': interval_}
+
 if __name__ == '__main__':
-  ps = parse_historical_start_date('- BTC-USD: 1m data not available for startTime=1410908400 and endTime=1620417497. Only 7 days worth of 1m granularity data are allowed to be fetched per request.')
-  dr = calculate_time_periods_for_ticker(ps)
+  # ps = parse_historical_start_date('- BTC-USD: 1m data not available for startTime=1410908400 and endTime=1620417497. Only 7 days worth of 1m granularity data are allowed to be fetched per request.')
+  # dr = calculate_time_periods_for_ticker(ps)
+  intervals = ['null', '1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
+  for interval in intervals:
+    print(date_range(interval))
   pass

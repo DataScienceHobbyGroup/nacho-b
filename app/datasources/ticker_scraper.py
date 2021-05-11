@@ -12,6 +12,7 @@ except ImportError:
 
 class TickerScraper:
   YAHOO_FINANCE_TICKER_CLASS = 'Fw(600) C($linkColor)'
+  
   # read in site list
   def read_in_site_list(self, file=None):
     sites_urls = open(file)
@@ -39,7 +40,7 @@ class TickerScraper:
       # a_ticker = yf.Ticker(tick)
       a_ticker = yf.Ticker(list_of_tickers[i])
       # info = a_ticker.info
-      (a_ticker.history(period='max', interval='1m'))# .to_csv(f'./data/{tick}_data.txt')
+      (a_ticker.history(period='max', interval='3mo'))# .to_csv(f'./data/{tick}_data.txt')
       # startDate = util.parse_historical_start_date(yf.shared._ERRORS[tick])
       startDate = util.parse_historical_start_date(yf.shared._ERRORS[list_of_tickers[i]])
       dateRanges.append(util.calculate_time_periods_for_ticker(startDate))
@@ -53,6 +54,20 @@ class TickerScraper:
         # (a_ticker.history(start=range_['start'], end=range_['end'], interval='1m')).to_csv(f'./data/{tick}_data.txt', mode='a')
         (a_ticker.history(start=range_['start'], end=range_['end'], interval='1m')).to_csv(f'./data/{list_of_tickers[i]}_data.txt', mode='a')
 
+  def download_yfinance_data(self, list_of_tickers=None):
+    for tick in list_of_tickers:
+      a_ticker = yf.Ticker(tick)
+      for interval in util.INTERVALS:
+        interval_ = util.date_range(interval)
+        if 'error' in interval_:
+          break
+        elif 'period' in interval_:
+          a_ticker.history(period=interval_['period'], interval=interval_['interval']).to_csv(f'./data/{tick}_data_{interval_["interval"]}.csv', mode='w')
+        elif 'start' in interval_ and 'end' in interval_:
+          a_ticker.history(start=interval_['start'], end=interval_['end'], interval=interval_['interval']).to_csv(f'./data/{tick}_data_{interval_["interval"]}.csv', mode='w')
+        else:
+          print('Some bogus shit going on here')
+          break
 
 
 
@@ -68,4 +83,4 @@ if __name__ == '__main__':
   ticker_scraper = TickerScraper()
   list_of_sites = ticker_scraper.read_in_site_list('resources/sites.txt')
   tickers = ticker_scraper.scrape_tickers(list_of_sites)
-  ticker_scraper.save_data(tickers)
+  ticker_scraper.download_yfinance_data(tickers)
