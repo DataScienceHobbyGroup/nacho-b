@@ -39,6 +39,7 @@ class TickerScraper:
         else:
           print('Some bogus shit going on here')
           break
+        util.rate_limiter()
 # Entrypoint
 if __name__ == '__main__':
   ticker_scraper = TickerScraper()
