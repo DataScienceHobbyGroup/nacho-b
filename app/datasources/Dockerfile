@@ -17,11 +17,15 @@ wheel
 # Set working directory
 WORKDIR /app/datasources
 
+# Copy resource files
 COPY /resources/* ./resources/
+
+# Make the data folder
+RUN mkdir data/
 
 # create user
 RUN useradd -m -r nacho && \
-chown nacho /app/datasources
+chown -R nacho .
 
 # Install dependencies
 COPY requirements.txt ./
@@ -33,13 +37,5 @@ COPY *.py .
 # set user
 USER nacho
 
-# Set args and env vars
-ARG GIT_HASH
-# -dev is default if no arg specified
-ENV GIT_HASH=${GIT_HASH:-dev} 
-
 # Entry point
-ENTRYPOINT python
-# -c "import os; print(os.getcwd());"
-#python -m unittest discover
-#["/datasources", "python", "-m", "unittest", "discover"]
+ENTRYPOINT python ticker_scraper.py

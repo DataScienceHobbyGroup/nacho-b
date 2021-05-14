@@ -2,9 +2,9 @@ try:
   from .scraper import scraper
 except ImportError:
   from scraper import scraper
-
 import yfinance as yf
 import pandas as pd
+import os, os.path
 try:
   from .util import util as util
 except ImportError:
@@ -40,9 +40,19 @@ class TickerScraper:
           print('Some bogus shit going on here')
           break
         util.rate_limiter()
+  # validate the data - TODO
+  def validate_data(self, num_tickers:int=0):
+    if num_tickers == 0:
+      return False
+    # path joining version for other paths
+    DIR = 'app/datasources/data'
+    print(len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))]))
+
+
 # Entrypoint
 if __name__ == '__main__':
   ticker_scraper = TickerScraper()
   list_of_sites = ticker_scraper.read_in_site_list('resources/sites.txt')
   tickers = ticker_scraper.scrape_tickers(list_of_sites)
   ticker_scraper.download_yfinance_data(tickers)
+  #ticker_scraper.validate_data(len(tickers))
