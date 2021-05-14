@@ -21,7 +21,9 @@ class fake_exchange:
     num_purchases = 0
     num_sales = 0
 
-    def buy(self, qty, value):
+    q = []
+
+    async def buy(self, qty, value):
         ''' Buy a number of the security at its current value '''
         amount_to_deduct = (qty * value) + self.TRANSACTION_COST_FIXED
         self.current_balance += qty
@@ -29,7 +31,7 @@ class fake_exchange:
         self.num_purchases += 1
         logger.info(f"Exchange recieved and fulfilled a request to buy {qty} {self.SECURITY} for {amount_to_deduct}")
 
-    def sell(self, qty, value):
+    async def sell(self, qty, value):
         ''' Sell a number of the security at its current value '''
         amount_to_award = (qty * value) - self.TRANSACTION_COST_FIXED
         self.current_balance -= qty
@@ -41,9 +43,17 @@ class fake_exchange:
         '''The number of securities you own right now'''
         return self.current_balance
 
-    def __init__(self,initial_investment):
+    def __init__(self,queue,initial_investment=0):
         logger.info(f"Opened an initial account with the fake exchange with an investment of {initial_investment}")        
+        self.q = queue
         self.current_balance = initial_investment
+
+    async def run(self):
+        print(self.q)
+        while True:
+            item = await self.q.get()
+            await print ('Got: ' + item)
+            await self.q.task_done()
 
     def trading_summary(self):
         emoji = "😂😂😂🤑🤑💰" if self.profit_loss > 0 else "😡😡😡🤬🤬🤬"
