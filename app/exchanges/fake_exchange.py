@@ -52,7 +52,7 @@ class fake_exchange:
         print(self.q)
         while True:
             item = await self.q.get()
-            await print ('Got: ' + item)
+            print ('Got: ' + item)
             await self.q.task_done()
 
     def trading_summary(self):
