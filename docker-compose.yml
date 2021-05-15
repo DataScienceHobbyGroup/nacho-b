@@ -1,0 +1,5 @@
+services:
+  yahoo_data_bot:
+    build: "./app/datasources/ ."
+    volumes:
+      - ./data:/app/datasources/data

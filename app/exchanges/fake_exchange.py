@@ -54,7 +54,7 @@ class fake_exchange:
         logger.info(f'''
         Opened an initial account with the fake exchange
          with an investment of {initial_investment}
-         ''')        
+         ''')
         self.current_balance = initial_investment
 
     def trading_summary(self):
