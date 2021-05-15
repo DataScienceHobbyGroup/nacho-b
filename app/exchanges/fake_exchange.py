@@ -49,6 +49,7 @@ class fake_exchange(base_class.exchange_base_class):
 
     async def run(self):
         await super().run()
+        await logger.info( trading_summary())
 
     def trading_summary(self):
         emoji = "😂😂😂🤑🤑💰" if self.profit_loss > 0 else "😡😡😡🤬🤬🤬"

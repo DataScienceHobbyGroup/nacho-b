@@ -18,26 +18,33 @@ async def main():
             filemode='w'
     )  
     
-    # Create queue
+    #TODO: Create a backtest module which takes in parameters for strategy, queue, data and exchange to make this a one-liner.
+
+    # Backtest of moving average strategy
     q = curio.Queue()
-
-    # Import some data - the data_source class handles any wrangling we need to do
     data_source = binance_csv("data/Binance_BTCUSDT_1h.csv")
-
-    # Pick an exchange (in this case a fake one but once we get going this class will be an
-    # adapter class that calls out to the exchange's real API)
     exchange = fake_exchange(q)
-
-    # Pick a strategy, and give it our exchange and data
     strategy_ma = moving_average(data_source, q)
-
-    #strategy_dca = dca(data_source, exchange)
-
     async with curio.TaskGroup() as g:
         await g.spawn(exchange.run)
-        await g.spawn(strategy_ma.run,10,50)
+        strat = await g.spawn(strategy_ma.run,10,50)
+        await strat.join()
+        await g.cancel_remaining()
         async for task in g:
-            print(task, 'completed.', task.result)
+            logging.info(str(task) + 'completed.' + str(task.result))
+
+    # Backtest of dollar-cost-average strategy
+    q = curio.Queue()
+    data_source = binance_csv("data/Binance_BTCUSDT_1h.csv")
+    exchange = fake_exchange(q)
+    strategy_dca = dca(data_source, q)
+    async with curio.TaskGroup() as g:
+        await g.spawn(exchange.run)
+        strat = await g.spawn(strategy_dca.run,10,50)
+        await strat.join()
+        await g.cancel_remaining()
+        async for task in g:
+            logging.info(str(task) + 'completed.' + str(task.result))       
 
     #exchg_task = await curio.spawn()
     #strat_task = await curio.spawn(strategy_ma.run(10,50))
