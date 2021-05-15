@@ -1,7 +1,9 @@
 import logging
 logger = logging.getLogger(__name__)
 
-class fake_exchange:
+from . import base_class
+
+class fake_exchange(base_class.exchange_base_class):
     '''A representitive exchange that behaves just like a real exchange would.'''
 
     #The cost in USD to make a transaction
@@ -20,8 +22,6 @@ class fake_exchange:
     #Keeping track of now many buys and sells we've done
     num_purchases = 0
     num_sales = 0
-
-    q = []
 
     async def buy(self, qty, value):
         ''' Buy a number of the security at its current value '''
@@ -44,16 +44,11 @@ class fake_exchange:
         return self.current_balance
 
     def __init__(self,queue,initial_investment=0):
+        super().__init__(queue,initial_investment)
         logger.info(f"Opened an initial account with the fake exchange with an investment of {initial_investment}")        
-        self.q = queue
-        self.current_balance = initial_investment
 
     async def run(self):
-        print(self.q)
-        while True:
-            item = await self.q.get()
-            print ('Got: ' + item)
-            await self.q.task_done()
+        await super().run()
 
     def trading_summary(self):
         emoji = "😂😂😂🤑🤑💰" if self.profit_loss > 0 else "😡😡😡🤬🤬🤬"

@@ -6,27 +6,23 @@ import pandas as pd
 import numpy
 import matplotlib.pyplot as plt
 from collections import deque
-from datasources.base_class import datasource_base_class as ds
 
-class moving_average:
+from .base_class import strategy_base_class as strategy
+from common.common_classes import transaction as t
+
+class moving_average(strategy):
 
     data_source = []
     queue = []
-    amount_held = 0
+    currently_holding = False
 
+    async def buy(self, amount, value):
+        await super().buy(amount,value)
+        self.currently_holding = True
 
-    def __init__(self, data_source:ds, queue:curio.Queue):
-        self.data_source = data_source
-        self.queue = queue
-        logger.info("Initialised the strategy.")
-
-    async def buy(self, amount):
-        await self.queue.put("BUY " + str(amount))
-        self.amount_held += 1
-
-    async def sell(self, amount):
-        await self.queue.put("SELL " + str(amount))
-        self.amount_held -= 1
+    async def sell(self, amount, value):
+        await super().sell(amount,value)
+        self.currently_holding = False
 
     async def run(self, ma_fast_window: int, ma_slow_window: int, open: bool = False):
 
@@ -36,9 +32,6 @@ class moving_average:
         price_open_close = 'open' if open else 'close'
 
         moving_average_window = list()
-
-        print(self.queue)
-        await self.queue.put("Test Message")
 
         for data in self.data_source.get_next_row():
             
@@ -52,13 +45,13 @@ class moving_average:
                 ma_slow = numpy.mean(moving_average_window)
                 
                 if ma_fast > ma_slow:
-                    if self.amount_held < 1:
+                    if not self.currently_holding:
                         logger.info(f"Asking the exchange to buy 1 security because ma_fast ({ma_fast}) is bigger than ma_slow ({ma_slow})")
-                        await self.buy(1)
+                        await self.buy(1,data[price_open_close] )
             
                 else:
-                    if self.amount_held > 0:
+                    if self.currently_holding:
                         logger.info(f"Asking the exchange to sell 1 security because ma_fast ({ma_fast}) is no longer bigger than ma_slow ({ma_slow}) and I have a position open")
-                        await self.sell(1)
+                        await self.sell(1, data[price_open_close])
 
         return None
