@@ -2,32 +2,23 @@ import logging
 logger = logging.getLogger(__name__)
 
 import pandas as pd
+from .base_class import strategy_base_class as strategy
 
-class dca:
+class dca(strategy):
 
-    data_source = []
-    exchange = []
+    interval = 0
+    dollar_amount = 0
+    count = 0
 
-    def __init__(self, data_source, exchange):
-        self.data_source = data_source
-        self.exchange = exchange
-        logger.info("Initialised the strategy.")
+    async def configure(self, interval, dollar_amount):
+        self.interval = interval
+        self.dollar_amount = dollar_amount
+        logger.info(f"DCA strategy initialised with interval {interval} and dollar amount {dollar_amount}")
 
-    def run(self, interval, dollar_amount):
-
-        #logger.info(f"Running the strategy. Parameters are: ma_fast = {ma_fast} ma_slow = {ma_slow} open = {open}")
-
-        coin_pair = self.data_source.data
-        exchange = self.exchange
-    
-        count = 0
-        for row in coin_pair.iterrows():
-            if count % interval == 0:
-                cost_1_btc = row[1]['close']
-                buy_qty = dollar_amount / cost_1_btc
-                exchange.buy(buy_qty,row[1]['close'])
-            count += 1
-        
-        exchange.sell(exchange.get_current_balance(), coin_pair.iloc[-1]['close'])
-
-        return exchange
+    async def process_tick(self, tick):
+        if self.count % self.interval == 0:
+            cost_1_btc = tick['close']
+            buy_qty = self.dollar_amount / cost_1_btc
+            await super().buy(buy_qty,tick['close'])
+        self.count += 1
+        return None
