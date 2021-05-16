@@ -38,7 +38,7 @@ class fake_exchange(base_class.exchange_base_class):
         profit_loss = (self.current_balance * value) + self.currency_held
 
         self.num_purchases += 1
-        logger.info(f"Exch: Buying {qty}x{self.SECURITY_1} for {amount_to_deduct}. Current balance: {self.SECURITY_2} {self.currency_held}, {self.SECURITY_1} {self.current_balance} P/L: {profit_loss}")
+        logger.info(f"Exch: BUY  {qty}x{self.SECURITY_1} for {amount_to_deduct}. Current balance: {self.SECURITY_2} {self.currency_held}, {self.SECURITY_1} {self.current_balance} P/L: {profit_loss}")
 
     async def sell(self, qty, value):
         ''' Sell a number of the security at its current value '''
@@ -54,7 +54,7 @@ class fake_exchange(base_class.exchange_base_class):
         profit_loss = (self.current_balance * value) + self.currency_held
 
         self.num_sales += 1
-        logger.info(f"Exch: Buying {qty}x{self.SECURITY_1} for {amount_to_award}. Current balance: {self.SECURITY_2} {self.currency_held}, {self.SECURITY_1} {self.current_balance} P/L: {profit_loss}")
+        logger.info(f"Exch: SELL {qty}x{self.SECURITY_1} for {amount_to_award}. Current balance: {self.SECURITY_2} {self.currency_held}, {self.SECURITY_1} {self.current_balance} P/L: {profit_loss}")
 
     def get_current_balance(self):
         '''The number of securities you own right now'''

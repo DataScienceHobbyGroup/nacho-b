@@ -19,45 +19,39 @@ async def main():
     )  
     
     #TODO: Create a backtest module which takes in parameters for strategy, queue, data and exchange to make this a one-liner.
+    # tidy up this mess.
 
     # Backtest of moving average strategy
     transaction_queue = curio.Queue()
-    data_source = binance_csv("data/Binance_BTCUSDT_1h.csv")
+    ticker_queue = curio.Queue()
+    data_source = binance_csv("data/Binance_BTCUSDT_1h.csv", ticker_queue)
     exchange = fake_exchange(transaction_queue)
-    strategy_ma = moving_average(data_source, transaction_queue)
+    strategy_ma = moving_average(data_source, transaction_queue, ticker_queue)
+    await strategy_ma.configure(10, 50)
     async with curio.TaskGroup() as g:
         await g.spawn(exchange.run)
-        strat = await g.spawn(strategy_ma.run,10,50)
-        await strat.join()
+        await g.spawn(strategy_ma.run)
+        ds = await g.spawn(data_source.run)
+        await ds.join()
         await g.cancel_remaining()
         async for task in g:
             logging.info(str(task) + 'completed.' + str(task.result))
 
     # Backtest of dollar-cost-average strategy
-    q = curio.Queue()
-    data_source = binance_csv("data/Binance_BTCUSDT_1h.csv")
-    exchange = fake_exchange(q)
-    strategy_dca = dca(data_source, q)
+    transaction_queue = curio.Queue()
+    ticker_queue = curio.Queue()
+    data_source = binance_csv("data/Binance_BTCUSDT_1h.csv", ticker_queue)
+    exchange = fake_exchange(transaction_queue)
+    strategy_dca = dca(data_source, transaction_queue, ticker_queue)
+    await strategy_dca.configure(10, 24)
     async with curio.TaskGroup() as g:
         await g.spawn(exchange.run)
-        strat = await g.spawn(strategy_dca.run,10,50)
-        await strat.join()
+        ds = await g.spawn(data_source.run)
+        await g.spawn(strategy_dca.run)
+        await ds.join()
         await g.cancel_remaining()
         async for task in g:
             logging.info(str(task) + 'completed.' + str(task.result))       
-
-    #exchg_task = await curio.spawn()
-    #strat_task = await curio.spawn(strategy_ma.run(10,50))
-    #await strat_task.join()
-    #await exchg_task.cancel()    
-    
-    
-    #output_ma = strategy_ma.run(10, 50, False)
-    #logging.info(output_ma.trading_summary())
-
-    #number = 24*30*4
-    #output_dca = strategy_dca.run(number, number)
-    #logging.info(output_dca.trading_summary())
 
 if __name__ == '__main__':
     curio.run(main, with_monitor=True)
