@@ -16,7 +16,6 @@ class exchange_base_class():
                 await self.buy(item.amount, item.desired_value)
             else:
                 await self.sell(item.amount, item.desired_value)
-            #print ('Got: ' + str(item))
             await self.q.task_done()
 
     def __init__(self,queue,initial_investment=0):  

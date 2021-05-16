@@ -21,10 +21,10 @@ async def main():
     #TODO: Create a backtest module which takes in parameters for strategy, queue, data and exchange to make this a one-liner.
 
     # Backtest of moving average strategy
-    q = curio.Queue()
+    transaction_queue = curio.Queue()
     data_source = binance_csv("data/Binance_BTCUSDT_1h.csv")
-    exchange = fake_exchange(q)
-    strategy_ma = moving_average(data_source, q)
+    exchange = fake_exchange(transaction_queue)
+    strategy_ma = moving_average(data_source, transaction_queue)
     async with curio.TaskGroup() as g:
         await g.spawn(exchange.run)
         strat = await g.spawn(strategy_ma.run,10,50)
