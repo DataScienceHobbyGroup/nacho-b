@@ -40,11 +40,25 @@ class ddca:
 
 
     def run(self, record_file):
-        data_source = self.data_source
+        data_source = self.data_source.data
         exchange = self.exchange
+        self.load_state(record_file)
+        logger.info(f'''Running the strategy. 
+        Parameters are: investment period = {self.investment_period} 
+        total investment = {self.total_investment} 
+        installments remaining = {len(self.investment_installments)}''')
+        print(f'''Running the strategy. 
+        Parameters are: investment period = {self.investment_period} 
+        total investment = {self.total_investment} 
+        installments remaining = {len(self.investment_installments)}''')
+        
+        self.save_state(record_file)
+        return exchange
+
+    def load_state(self, record_file):
         configFilePath = record_file
         self.configParser.read(configFilePath)
-        if self.configParser.get('meta_state', 'in_progress') == 'True':
+        if self.configParser.get('meta_state', 'in_progress').lower() == 'true':
             self.investment_period = int(self.configParser.get('state', 'investment_period'))
             self.total_investment = int(self.configParser.get('state', 'total_investment'))
             self.investment_installments = self.configParser.get('state', 'investment_installments')
@@ -62,15 +76,12 @@ class ddca:
                     self.investment_installments.append(installments_value)
                 self.investment_installments.append(remainder_value)
                 pass
-        self.write_state(record_file)
-        return exchange
 
-    def write_state(self, record_file):
+    def save_state(self, record_file):
         self.configParser.set('meta_state', 'in_progress', 'True')
         self.configParser.set('state', 'investment_period', self.investment_period)
         self.configParser.set('state', 'total_investment', self.total_investment)
         self.configParser.set('state', 'investment_installments', self.investment_installments)
-        import sys
         with open(record_file, 'w') as file:
             self.configParser.write(file)
         pass

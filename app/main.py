@@ -40,6 +40,6 @@ if __name__ == '__main__':
         # output_dca = strategy_dca.run(number, number)
         # logging.info(output_dca.trading_summary())
 
-        output_ddca = strategy_ddca.run('app/strategies/ddca.txt')
+        output_ddca = strategy_ddca.run('app/strategies/ddca.ini')
 
 

@@ -19,7 +19,7 @@ class binance_csv:
         ''' Initialise a Binance formatted CSV file
         arguments: path(str) - path to the CSV file.
         '''
-        self.data = pd.read_csv(path, index_col=0)
+        self.data = pd.read_csv(path)
         
         # reverse data set. data should be ordered from oldest to newest
         if self.REVERSE:
@@ -27,3 +27,10 @@ class binance_csv:
 
         reverse = "Data was reversed." if self.REVERSE else "Data was not reversed."
         logger.info(f"Read {self.data.shape} from {path} successfully. {reverse}")
+
+        # convert all dates to dd/mm/yyyy hr:min (13/04/2021 00:00) format
+        dates = self.data['date']
+        print(dates.head)
+        dates = pd.to_datetime(dates)
+        print()
+        # remove duplicate values
