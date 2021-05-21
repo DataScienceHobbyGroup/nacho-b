@@ -10,8 +10,7 @@ class strategy_base_class():
     transaction_queue = []
     ticker_queue = []
 
-    def __init__(self, data_source:ds, transaction_queue:curio.Queue, ticker_queue:curio.Queue):
-        self.data_source = data_source
+    def __init__(self, transaction_queue:curio.Queue, ticker_queue:curio.Queue):
         self.transaction_queue = transaction_queue
         self.ticker_queue = ticker_queue
         logger.info(f"Initialised the {__name__} strategy.")

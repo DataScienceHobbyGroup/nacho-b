@@ -14,9 +14,8 @@ class moving_average(strategy):
     currently_holding = False
     ma_fast_window = 0
     ma_slow_window = 0
-    open = False
     moving_average_window = list()
-    price_open_close = ''
+    price_open_close = 'close'
 
     async def buy(self, amount, value):
         await super().buy(amount,value)
@@ -26,11 +25,13 @@ class moving_average(strategy):
         await super().sell(amount,value)
         self.currently_holding = False
 
-    async def configure(self, ma_fast_window: int, ma_slow_window: int, open: bool = False):
-        logger.info(f"Parameters are: ma_fast = {ma_fast_window} ma_slow = {ma_slow_window} open = {open}")
-        self.ma_fast_window = ma_fast_window
-        self.ma_slow_window = ma_slow_window
-        self.price_open_close = 'open' if open else 'close'
+    async def configure(self, params:str):
+        ParamsList = params.split(',')
+        self.ma_fast_window = int(ParamsList[0])
+        self.ma_slow_window = int(ParamsList[1])
+        if len(ParamsList) > 2:
+            self.price_open_close = bool(ParamsList[2])
+        logger.info(f"Parameters are: ma_fast = {self.ma_fast_window} ma_slow = {self.ma_slow_window} open = {self.price_open_close}")
 
     async def process_tick(self, tick):
         self.moving_average_window.append(tick[self.price_open_close])
