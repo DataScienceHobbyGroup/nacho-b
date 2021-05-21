@@ -1,9 +1,13 @@
 import curio
 import logging
 
+from datasources.base_class import datasource_base_class as ds
+from strategies.base_class import strategy_base_class as strat
+from exchanges.base_class import exchange_base_class as exch
+
 class backtest_runner:
 
-    async def run (strategy, exchange, datasource, strategy_params, datasource_path):
+    async def run (strategy:strat, exchange:exch, datasource:ds, strategy_params:str, datasource_path:str):
 
         # Get curio queues
         transaction_queue = curio.Queue()

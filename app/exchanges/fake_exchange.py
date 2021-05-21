@@ -68,9 +68,4 @@ class fake_exchange(base_class.exchange_base_class):
         await super().run()
         await logger.info( trading_summary())
 
-    def trading_summary(self):
-        emoji = "😂😂😂🤑🤑💰" if self.profit_loss > 0 else "😡😡😡🤬🤬🤬"
-        return f'''
-I made {self.num_purchases} purchases and {self.num_sales} sales and came away with a profit of {self.profit_loss} {emoji}
-At the end of the game I am holding {self.current_balance} {self.SECURITY}'''
 
