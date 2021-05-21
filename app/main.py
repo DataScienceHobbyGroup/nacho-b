@@ -53,33 +53,29 @@ datasource_dict = {
         type=click.Path(exists=True, file_okay=True, dir_okay=False, writable=False, readable=True, resolve_path=False, allow_dash=True, path_type=str))
 @click_log.simple_verbosity_option(logger)
 def backtest(strategy, strategy_params, exchange, datasource, datasource_path):
-    try:
-        strategy_object = strategy_dict[strategy]
-        exchange_object = exchange_dict[exchange]
-        datasrce_object = datasource_dict[datasource]
-    except:
-        click.echo("Argument error.")
+    if (strategy == None or strategy_params== None or exchange == None or datasource == None or datasource_path == None):
+        click.echo("Argument error. Run main.py backtest --help for info on the arguments")
+    #We don't need to handle the case of these assignments failing because validaiton is handled for us by click
+    strategy_object = strategy_dict[strategy]
+    exchange_object = exchange_dict[exchange]
+    datasrce_object = datasource_dict[datasource]
     from backtest import backtest_runner as bt
     curio.run(bt.run,
-        strategy_object,
-        exchange_object,
-        datasrce_object, 
-        strategy_params, 
-        datasource_path)
+        strategy_object,exchange_object,datasrce_object, strategy_params, datasource_path)
 
 @click.command()
 @click.option('--strategy', help='Which strategy to use')
 @click.option('--strategy_params', help='The parameters for the strategy, as a comma-separated list')
 @click.option('--exchange', help='Which exchange to use')
 @click.option('--datasource', help='Which data source class to use')
-def connect_to_api():
+def connect_to_api(strategy, strategy_params, exchange, datasource):
     logger.info("This is where in the future we will connect to a live api and run the strategy indefinitely.")
 
 @click.command()
 @click.option('--strategy', help='Which strategy to use')
 @click.option('--datasource', help='Which data source class to use')
 @click.option('--datasource_path', help='The path to the datasource csv (if applicable)')
-def optimise():
+def optimise(strategy, datasource, datasource_path):
     logger.info("This is where in the future we will run a training algorithm to optimise the params of the strategy")
 
 # Register the CLI commands
