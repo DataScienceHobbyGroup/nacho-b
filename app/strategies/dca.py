@@ -10,10 +10,11 @@ class dca(strategy):
     dollar_amount = 0
     count = 0
 
-    async def configure(self, interval, dollar_amount):
-        self.interval = interval
-        self.dollar_amount = dollar_amount
-        logger.info(f"DCA strategy initialised with interval {interval} and dollar amount {dollar_amount}")
+    async def configure(self, params:str):
+        ParamsList = params.split(',')
+        self.interval = int(ParamsList[0])
+        self.dollar_amount = int(ParamsList[1])
+        logger.info(f"DCA strategy initialised with interval {self.interval} and dollar amount {self.dollar_amount}")
 
     async def process_tick(self, tick):
         if self.count % self.interval == 0:

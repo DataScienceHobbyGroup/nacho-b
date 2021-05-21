@@ -5,11 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Nacho Debug",
+            "name": "Backtest moving average strategy",
             "type": "python",
             "request": "launch",
             "program": "app/main.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "args": ["backtest", "--strategy", "moving_average", "--strategy_params", "10,50", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
+        } ,
+        {
+            "name": "Backtest DCA strategy",
+            "type": "python",
+            "request": "launch",
+            "program": "app/main.py",
+            "console": "integratedTerminal",
+            "args": ["backtest", "--strategy", "dca", "--strategy_params", "10,24", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
         }
     ]
 }
