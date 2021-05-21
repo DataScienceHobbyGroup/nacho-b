@@ -55,14 +55,14 @@ datasource_dict = {
 def backtest(strategy, strategy_params, exchange, datasource, datasource_path):
     try:
         strategy_object = strategy_dict[strategy]
-        exchahge_object = exchange_dict[exchange]
+        exchange_object = exchange_dict[exchange]
         datasrce_object = datasource_dict[datasource]
     except:
         click.echo("Argument error.")
     from backtest import backtest_runner as bt
     curio.run(bt.run,
         strategy_object,
-        exchahge_object,
+        exchange_object,
         datasrce_object, 
         strategy_params, 
         datasource_path)
