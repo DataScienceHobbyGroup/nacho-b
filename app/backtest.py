@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 
 from datasources.base_class import datasource_base_class as ds
 from strategies.base_class import strategy_base_class as strat
-from exchanges.base_class import exchange_base_class as exch
+from exchanges.base_class import ExchangeBaseClass as exch
 
 class backtest_runner:
 
