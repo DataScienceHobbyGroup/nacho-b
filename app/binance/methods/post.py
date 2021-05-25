@@ -311,5 +311,68 @@ class Trade:
             newOrderRespType=newOrderRespType, recvWindow=recvWindow
         )
 
+    def myTrades(
+        self,
+        symbol: str,
+        startTime: float = None,
+        endTime: float = None,
+        fromId: float = None,
+        limit: int = None,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+        Get trades for a specific account and symbol
+
+        Weight: 10
+        Data Source: Database
+
+        Other info
+        ----------
+        ``fromId`` TradeId to fetch from. Default gets most recent trades.
+        If ``fromId`` is set, it will get ``id`` >= the ``fromId``.
+        Otherwise most recent trades are returned.
+        ``limit`` Default 500; max 1000.
+        ``recvWindow`` The value cannot be greater than ``60000``
+
+        Parameters
+        ----------
+            symbol (str):
+                Mandatory: Currency symbol of interest.
+                Example: ``BTCUSDT`` for Bitcoin vs Tether
+                (US dollar stablecoin)
+
+            startTime (float):
+                TODO: confirm if time is expressed in ms
+                Optional: The point in history to get data from.
+
+            endTime (float):
+                TODO: confirm if time is expressed in ms
+                Optional: The point in history to get data to.
+
+            fromId (float):
+                Optional: The trade id to in which to get data from.
+
+            limit (int):
+                Optional: The number of trades to get starting from
+                now - ``limit``
+                Example: if ``limit`` is set to 10 the API will return
+                the 10 previous trades.
+
+            recvWindow (int):
+                Time window in milliseconds to execute the order.
+                The value cannot be greater than 60000.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (dict):
+            TODO: Add description.
+        """
+        return post(
+            self._url, 'myTrades', key=self.__key, secret=self.__secret,
+            symbol=symbol.upper(), startTime=startTime, endTime=endTime,
+            fromId=fromId, limit=limit, recvWindow=recvWindow
+        )
+
 
 del(Literal, Optional)
