@@ -82,7 +82,7 @@ def response_handler(func: Callable[..., Any]) -> Callable[..., Any]:
                     'url': response.url,
                     'status_code': response.status_code,
                     'reason': response.reason,
-                    'message': response.json()
+                    'message': response.content.decode('utf-8')
                 },
                 indent=2
             )

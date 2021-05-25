@@ -16,8 +16,8 @@ from dotenv import load_dotenv
 from typing import Any, Callable, Optional
 
 # Import local modules
-from .methods.get import Get
-from .methods.post import Trade
+from .methods.market import Get
+from .methods.client import Trade
 
 load_dotenv('.env')
 

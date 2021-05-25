@@ -6,11 +6,12 @@ Author: Vitali Lupusor
 """
 
 # Import standard modules
-from typing import Literal, Optional
+from datetime import date, datetime
+from typing import Literal, Optional, Union
 
 # Import local modules
-from ..helpers import post  # type: ignore
-from ..helpers.type_literals import ResponseTypeOptions, TypeOptions
+from ..helpers import get, post  # type: ignore
+from ..helpers.type_literals import ResponseTypeOptions, TypeOptions  # type: ignore  # noqa: E501
 
 
 class Trade:
@@ -314,14 +315,14 @@ class Trade:
     def myTrades(
         self,
         symbol: str,
-        startTime:  Optional[float] = None,
-        endTime:  Optional[float] = None,
-        fromId:  Optional[float] = None,
-        limit:  Optional[int] = None,
+        startTime: Optional[Union[str, date, datetime]] = None,
+        endTime: Optional[Union[str, date, datetime]] = None,
+        fromId: Optional[float] = None,
+        limit: Optional[int] = None,
         recvWindow: int = 5000
     ) -> dict:
         """
-        Get trades for a specific account and symbol
+        Get trades for a specific account and symbol.
 
         Weight: 10
         Data Source: Database
@@ -341,18 +342,18 @@ class Trade:
                 Example: ``BTCUSDT`` for Bitcoin vs Tether
                 (US dollar stablecoin)
 
-            startTime (float):
+            startTime (Optional[Union[str, date, datetime]]):
                 TODO: confirm if time is expressed in ms
                 Optional: The point in history to get data from.
 
-            endTime (float):
+            endTime (Optional[Union[str, date, datetime]]):
                 TODO: confirm if time is expressed in ms
                 Optional: The point in history to get data to.
 
-            fromId (float):
+            fromId (Optional[int]):
                 Optional: The trade id to in which to get data from.
 
-            limit (int):
+            limit (Optional[int]):
                 Optional: The number of trades to get starting from
                 now - ``limit``
                 Example: if ``limit`` is set to 10 the API will return
@@ -368,11 +369,11 @@ class Trade:
             (dict):
             TODO: Add description.
         """
-        return post(
+        return get(
             self._url, 'myTrades', key=self.__key, secret=self.__secret,
             symbol=symbol.upper(), startTime=startTime, endTime=endTime,
             fromId=fromId, limit=limit, recvWindow=recvWindow
         )
 
 
-del(Literal, Optional)
+del(Literal, Optional, date, datetime)
