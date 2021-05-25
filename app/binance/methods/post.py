@@ -314,10 +314,10 @@ class Trade:
     def myTrades(
         self,
         symbol: str,
-        startTime: float = None,
-        endTime: float = None,
-        fromId: float = None,
-        limit: int = None,
+        startTime:  Optional[float] = None,
+        endTime:  Optional[float] = None,
+        fromId:  Optional[float] = None,
+        limit:  Optional[int] = None,
         recvWindow: int = 5000
     ) -> dict:
         """
