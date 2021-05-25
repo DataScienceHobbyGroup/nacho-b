@@ -47,6 +47,17 @@ class Binance:
             url (str):
                 Server URL.
                 Defaults to ``https://testnet.binance.vision/api/v3``.
+
+        Arguments
+        ---------
+            get (Callable[..., Any]):
+                Object for calling on ``Market Data Endpoints`` Binance APIs.
+
+            trade (Callable[..., Any]):
+                Object for calling on ``Spot Account/Trade`` Binance APIs.
+
+            url (str):
+                Server URL where the requests will be sent to.
         """
         # Import standard modules
         from os import getenv
@@ -54,6 +65,8 @@ class Binance:
         self.__key = key or getenv('API_KEY')
         self.__secret = secret or getenv('API_SECRET')
         self._url = url or 'https://testnet.binance.vision/api/v3'
+        self._get = None
+        self._trade = None
 
     def __repr__(self) -> str:
         """Configure object representation."""
@@ -146,12 +159,16 @@ class Binance:
     @property
     def get(self):
         """Return all ``GET`` method APIs."""
-        return Get(self.__key, self._url)
+        if not self._get:
+            self._get = Get(self.__key, self._url)
+        return self._get
 
     @property
     def trade(self):
         """Return all ``POST`` method APIs."""
-        return Trade(self.__key, self.__secret, self._url)
+        if not self._trade:
+            self._trade = Trade(self.__key, self.__secret, self._url)
+        return self._trade
 
 
 del(Any, Callable, Optional)
