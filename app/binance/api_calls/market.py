@@ -1,5 +1,5 @@
 """
-Collection of Binance API calls wiht ``GET`` method.
+Collection of ``Market Data Endpoint`` APIs.
 
 Date: 2021-05-25
 Author: Vitali Lupusor
@@ -11,11 +11,11 @@ from typing import Any, Dict, List, Optional, Union
 
 # Import local modules
 from ..helpers import get  # type: ignore
-from ..helpers.type_literals import KlineInterval, OrderBookLimit
+from ..helpers.type_literals import KlineInterval, OrderBookLimit  # type: ignore # noqa: E501
 
 
-class Get:
-    """Collection of ``GET`` method APIs."""
+class MarketData:
+    """Collection of ``Market Data Endpoint`` APIs."""
 
     def __init__(
         self, key: Optional[str] = None, url: Optional[str] = None
@@ -238,10 +238,12 @@ class Get:
         """
         Get older market trades.
 
-        If ``startTime`` and ``endTime`` are sent, time between ``startTime``
-        and ``endTime`` must be less than 1 hour.
-        If ``fromId``, ``startTime`` and ``endTime`` are not sent, the most
-        recent aggregate trades will be returned.
+        Description
+        -----------
+            If ``startTime`` and ``endTime`` are sent, time between
+            ``startTime`` and ``endTime`` must be less than 1 hour.
+            If ``fromId``, ``startTime`` and ``endTime`` are not sent, the most
+            recent aggregate trades will be returned.
 
         Weight: 1
         Data Source: Database
@@ -286,7 +288,7 @@ class Get:
             ]
         """
         # Import local modules
-        from ..helpers import to_timestamp
+        from ..helpers import to_timestamp  # type: ignore
 
         _startTime = to_timestamp(startTime) if startTime else None
         _endTime = to_timestamp(endTime) if endTime else None
@@ -362,7 +364,7 @@ class Get:
             ]
         """
         # Import local modules
-        from ..helpers import to_timestamp
+        from ..helpers import to_timestamp  # type: ignore
 
         _startTime = to_timestamp(startTime) if startTime else None
         _endTime = to_timestamp(endTime) if endTime else None

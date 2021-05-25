@@ -12,14 +12,11 @@ Author: Vitali Lupusor
 """
 
 # Import standard modules
-from dotenv import load_dotenv
-from typing import Any, Callable, Optional
+from typing import Optional
 
 # Import local modules
-from .methods.market import Get
-from .methods.client import Trade
-
-load_dotenv('.env')
+from .api_calls.market import MarketData    # type: ignore
+from .api_calls.client import Trade         # type: ignore
 
 
 class Binance:
@@ -50,10 +47,10 @@ class Binance:
 
         Arguments
         ---------
-            get (Callable[..., Any]):
+            get (MarketData):
                 Object for calling on ``Market Data Endpoints`` Binance APIs.
 
-            trade (Callable[..., Any]):
+            trade (Trade):
                 Object for calling on ``Spot Account/Trade`` Binance APIs.
 
             url (str):
@@ -65,7 +62,7 @@ class Binance:
         self.__key = key or getenv('API_KEY')
         self.__secret = secret or getenv('API_SECRET')
         self._url = url or 'https://testnet.binance.vision/api/v3'
-        self._get = None
+        self._public = None
         self._trade = None
 
     def __repr__(self) -> str:
@@ -73,7 +70,7 @@ class Binance:
         return f'<Binance: {self._url}>'
 
     @classmethod
-    def from_env_file(cls, path: str) -> Callable[..., Any]:
+    def from_env_file(cls, path: str):
         """
         Load credentials from ``.env`` file.
 
@@ -81,13 +78,9 @@ class Binance:
         ----------
             path (str):
                 Path to the ``.env`` file containing the credentials.
-
-        Returns
-        -------
-            (Callable[..., Any])
-            The class itself with API key and secret loaded.
         """
         # Import standard modules
+        from dotenv import load_dotenv
         from os import getenv
 
         load_dotenv(path)
@@ -106,7 +99,7 @@ class Binance:
         return cls(key, secret, url)
 
     @classmethod
-    def from_json_file(cls, path: str) -> Callable[..., Any]:
+    def from_json_file(cls, path: str):
         """
         Load credentials from a ``JSON`` file.
 
@@ -114,17 +107,12 @@ class Binance:
         ----------
             path (str):
                 Path to the ``JSON`` file containing the credentials.
-
-        Returns
-        -------
-            (Callable[..., Any])
-            The class itself with API key and secret loaded.
         """
         # Import standard modules
-        import json
+        from json import load
 
         with open(path) as file_obeject:
-            credentials = json.load(file_obeject)
+            credentials = load(file_obeject)
 
         key = credentials.get('API_KEY')
         secret = credentials.get('API_SECRET')
@@ -157,18 +145,18 @@ class Binance:
         self._url = url
 
     @property
-    def get(self):
-        """Return all ``GET`` method APIs."""
-        if not self._get:
-            self._get = Get(self.__key, self._url)
-        return self._get
+    def public(self) -> MarketData:
+        """Return all ``Market Data Endpoint`` APIs."""
+        if not self._public:
+            self._public = MarketData(self.__key, self._url)
+        return self._public
 
     @property
-    def trade(self):
-        """Return all ``POST`` method APIs."""
+    def trade(self) -> Trade:
+        """Return all ``Spot Account/Trade`` APIs."""
         if not self._trade:
             self._trade = Trade(self.__key, self.__secret, self._url)
         return self._trade
 
 
-del(Any, Callable, Optional)
+del(Optional, )

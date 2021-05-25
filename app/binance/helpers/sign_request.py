@@ -11,7 +11,7 @@ from typing import Any, Union
 
 def sign(secret: Union[bytes, str], **params: Any) -> dict:
     """
-    TODO: Add description.
+    Create a ``timestamp`` based HMAC signature.
 
     Parameters
     ----------
@@ -39,7 +39,7 @@ def sign(secret: Union[bytes, str], **params: Any) -> dict:
     if 'recvWindow' not in _params:
         _params['recvWindow'] = 5000  # milliseconds
     _params['timestamp'] = int(
-        datetime.timestamp(datetime.now()) * 1000
+        datetime.timestamp(datetime.now()) * 1000  # Convert to milliseconds
     )
 
     signature = urlencode(_params)

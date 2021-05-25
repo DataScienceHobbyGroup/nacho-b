@@ -1,5 +1,5 @@
 """
-Collection of Binance API calls wiht ``POST`` method.
+Collection of ``Spot Account/Trades`` APIs.
 
 Date: 2021-05-25
 Author: Vitali Lupusor
@@ -61,37 +61,39 @@ class Trade:
 
         Other info
         ----------
-        ``LIMIT_MAKER`` are ``LIMIT`` orders that will be rejected, if they
-        would immediately match and trade as a taker.
-        ``STOP_LOSS`` and ``TAKE_PROFIT`` will execute a ``MARKET`` order when
-        the ``stopPrice`` is reached.
-        Any ``LIMIT`` or ``LIMIT_MAKER`` type order can be made an iceberg
-        order by sending an ``icebergQty``.
-        Any order with an ``icebergQty`` MUST have ``timeInForce`` set to
-        ``GTC``.
-        ``MARKET`` orders using the quantity field specifies the amount of the
-        base asset the user wants to buy or sell at the market price.
-        For example, sending a ``MARKET`` order on BTCUSDT will specify how
-        much BTC the user is buying or selling.
-        ``MARKET`` orders using ``quoteOrderQty`` specifies the amount the user
-        wants to spend (when buying) or receive (when selling) the quote asset;
-        the correct quantity will be determined based on the market liquidity
-        and ``quoteOrderQty``.
+            ``LIMIT_MAKER`` are ``LIMIT`` orders that will be rejected, if they
+            would immediately match and trade as a taker.
+            ``STOP_LOSS`` and ``TAKE_PROFIT`` will execute a ``MARKET`` order
+            when the ``stopPrice`` is reached.
+            Any ``LIMIT`` or ``LIMIT_MAKER`` type order can be made an iceberg
+            order by sending an ``icebergQty``.
+            Any order with an ``icebergQty`` MUST have ``timeInForce`` set to
+            ``GTC``.
+            ``MARKET`` orders using the quantity field specifies the amount of
+            the base asset the user wants to buy or sell at the market price.
+            For example, sending a ``MARKET`` order on BTCUSDT will specify how
+            much BTC the user is buying or selling.
+            ``MARKET`` orders using ``quoteOrderQty`` specifies the amount the
+            user wants to spend (when buying) or receive (when selling) the
+            quote asset; the correct quantity will be determined based on the
+            market liquidity and ``quoteOrderQty``.
 
-        Using BTCUSDT as an example:
-        On the BUY side, the order will buy as many BTC as ``quoteOrderQty``
-        USDT can.
-        On the SELL side, the order will sell as much BTC needed to receive
-        ``quoteOrderQty`` USDT.
-        ``MARKET`` orders using ``quoteOrderQty`` will not break ``LOT_SIZE``
-        filter rules; the order will execute a quantity that will have the
-        notional value as close as possible to ``quoteOrderQty``.
-        Same ``newClientOrderId`` can be accepted only when the previous one is
-        filled, otherwise the order will be rejected.
-        Trigger order price rules against market price for both ``MARKET`` and
-        ``LIMIT`` versions:
-        Price above market price: STOP_LOSS -> BUY, TAKE_PROFIT -> SELL
-        Price below market price: STOP_LOSS -> SELL, TAKE_PROFIT -> BUY
+            Using BTCUSDT as an example:
+            On the BUY side, the order will buy as many BTC as
+            ``quoteOrderQty`` USDT can.
+            On the SELL side, the order will sell as much BTC needed to receive
+            ``quoteOrderQty`` USDT.
+            ``MARKET`` orders using ``quoteOrderQty`` will not break
+            ``LOT_SIZE`` filter rules; the order will execute a quantity that
+            will have the notional value as close as possible to
+            ``quoteOrderQty``.
+            Same ``newClientOrderId`` can be accepted only when the previous
+            one is filled, otherwise the order will be rejected.
+            Trigger order price rules against market price for both ``MARKET``
+            and
+            ``LIMIT`` versions:
+            Price above market price: STOP_LOSS -> BUY, TAKE_PROFIT -> SELL
+            Price below market price: STOP_LOSS -> SELL, TAKE_PROFIT -> BUY
 
         Parameters
         ----------
@@ -198,37 +200,38 @@ class Trade:
 
         Other info
         ----------
-        ``LIMIT_MAKER`` are ``LIMIT`` orders that will be rejected, if they
-        would immediately match and trade as a taker.
-        ``STOP_LOSS`` and ``TAKE_PROFIT`` will execute a ``MARKET`` order when
-        the ``stopPrice`` is reached.
-        Any ``LIMIT`` or ``LIMIT_MAKER`` type order can be made an iceberg
-        order by sending an ``icebergQty``.
-        Any order with an ``icebergQty`` MUST have ``timeInForce`` set to
-        ``GTC``.
-        ``MARKET`` orders using the quantity field specifies the amount of the
-        base asset the user wants to buy or sell at the market price.
-        For example, sending a ``MARKET`` order on BTCUSDT will specify how
-        much BTC the user is buying or selling.
-        ``MARKET`` orders using ``quoteOrderQty`` specifies the amount the user
-        wants to spend (when buying) or receive (when selling) the quote asset;
-        the correct quantity will be determined based on the market liquidity
-        and ``quoteOrderQty``.
+            ``LIMIT_MAKER`` are ``LIMIT`` orders that will be rejected, if they
+            would immediately match and trade as a taker.
+            ``STOP_LOSS`` and ``TAKE_PROFIT`` will execute a ``MARKET`` order
+            when the ``stopPrice`` is reached.
+            Any ``LIMIT`` or ``LIMIT_MAKER`` type order can be made an iceberg
+            order by sending an ``icebergQty``.
+            Any order with an ``icebergQty`` MUST have ``timeInForce`` set to
+            ``GTC``.
+            ``MARKET`` orders using the quantity field specifies the amount of
+            the base asset the user wants to buy or sell at the market price.
+            For example, sending a ``MARKET`` order on BTCUSDT will specify how
+            much BTC the user is buying or selling.
+            ``MARKET`` orders using ``quoteOrderQty`` specifies the amount the
+            user wants to spend (when buying) or receive (when selling) the
+            quote asset; the correct quantity will be determined based on the
+            market liquidity and ``quoteOrderQty``.
 
-        Using BTCUSDT as an example:
-        On the BUY side, the order will buy as many BTC as ``quoteOrderQty``
-        USDT can.
-        On the SELL side, the order will sell as much BTC needed to receive
-        ``quoteOrderQty`` USDT.
-        ``MARKET`` orders using ``quoteOrderQty`` will not break ``LOT_SIZE``
-        filter rules; the order will execute a quantity that will have the
-        notional value as close as possible to ``quoteOrderQty``.
-        Same ``newClientOrderId`` can be accepted only when the previous one is
-        filled, otherwise the order will be rejected.
-        Trigger order price rules against market price for both ``MARKET`` and
-        ``LIMIT`` versions:
-        Price above market price: STOP_LOSS -> BUY, TAKE_PROFIT -> SELL
-        Price below market price: STOP_LOSS -> SELL, TAKE_PROFIT -> BUY
+            Using BTCUSDT as an example:
+            On the BUY side, the order will buy as many BTC as
+            ``quoteOrderQty`` USDT can.
+            On the SELL side, the order will sell as much BTC needed to receive
+            ``quoteOrderQty`` USDT.
+            ``MARKET`` orders using ``quoteOrderQty`` will not break
+            ``LOT_SIZE`` filter rules; the order will execute a quantity that
+            will have the notional value as close as possible to
+            ``quoteOrderQty``.
+            Same ``newClientOrderId`` can be accepted only when the previous
+            one is filled, otherwise the order will be rejected.
+            Trigger order price rules against market price for both ``MARKET``
+            and ``LIMIT`` versions:
+            Price above market price: STOP_LOSS -> BUY, TAKE_PROFIT -> SELL
+            Price below market price: STOP_LOSS -> SELL, TAKE_PROFIT -> BUY
 
         Parameters
         ----------
