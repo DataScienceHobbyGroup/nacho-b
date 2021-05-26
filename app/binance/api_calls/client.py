@@ -492,5 +492,76 @@ class Trade:
             recvWindow=recvWindow
         )
 
+    def queryOrder(
+        self,
+        symbol: str,
+        orderId: Optional[int] = None,
+        origClientOrderId: Optional[str] = None,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+            Check an order's status.
+
+            Weight: 2
+            Data Source: Database
+
+        Other info
+        ----------
+            Either ``orderId`` or ``origClientOrderId`` must be sent.
+            For some historical orders ``cummulativeQuoteQty`` will be < 0,
+            meaning the data is not available at this time.
+
+        Parameters
+        ----------
+            symbol (str):
+                Currency symbol.
+
+            orderId (int):
+                Specified when cancelling a specific order. Corresponds with
+                the open order to be cancelled.
+
+            origClientOrderId (str):
+                When the order is created a clientOrderId is generated if
+                not specified. This is equivelant to origClientOrderId and
+                can be used in this parameter
+                
+            recvWindow (int):
+                Number of milliseconds in which to complete the transaction.
+                If timeout, transaction is being cancelled.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (dict):
+                Information confirming the cancellation of each trade that was open
+                and the details of each trade:-\n
+                [
+                    {
+                        'symbol': 'BTCUSDT',
+                        'origClientOrderId': '6uZQaihpXuvhgoICkKv6kI',
+                        'orderId': 4723160,
+                        'orderListId': -1,
+                        'clientOrderId': 'RH5lwa40NhLe0ibLTz0ydv',
+                        'price': '30000.00000000',
+                        'origQty': '1.00000000',
+                        'executedQty': '0.00000000',
+                        'cummulativeQuoteQty': '0.00000000',
+                        'status': 'CANCELED',
+                        'timeInForce': 'GTC',
+                        'type': 'LIMIT',
+                        'side': 'BUY'
+                    }
+                ]
+        """
+        return get(
+            self._url, 'order',
+            key=self.__key,
+            secret=self.__secret,
+            symbol=symbol.upper(),
+            orderId=orderId,
+            origClientOrderId=origClientOrderId,
+            recvWindow=recvWindow
+        )
+
 
 del(Literal, Optional, date, datetime)
