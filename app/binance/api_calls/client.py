@@ -369,8 +369,9 @@ class Trade:
 
         Returns
         -------
-            (dict):
-            TODO: Add description.
+            (List[dict]):
+                A list of all trades within a given range if set or the past X
+                number of trades either specified or defaulted to 5000
         """
         return get(
             self._url, 'myTrades', key=self.__key, secret=self.__secret,
@@ -422,7 +423,22 @@ class Trade:
         Returns
         -------
             (dict):
-            TODO: Add description.
+                Information regarding the cancelled order:-
+                {
+                    'symbol': 'BTCUSDT',
+                    'origClientOrderId': 'ux4BADmI0BopccaWjvU0r9',
+                    'orderId': 4740711,
+                    'orderListId': -1,
+                    'clientOrderId': 'GmC4kcQCc2t4PAV6wbbpT5',
+                    'price': '30000.00000000',
+                    'origQty': '0.01000000',
+                    'executedQty': '0.00000000',
+                    'cummulativeQuoteQty': '0.00000000',
+                    'status': 'CANCELED',
+                    'timeInForce': 'GTC',
+                    'type': 'LIMIT',
+                    'side': 'BUY'
+                }
         """
         return delete(
             self._url, 'order',
@@ -463,9 +479,9 @@ class Trade:
 
         Returns
         -------
-            (dict):
-                Information confirming the cancellation of each trade that was open
-                and the details of each trade:-\n
+            (List[dict]):
+                Information confirming the cancellation of each trade that was
+                open and the details of each trade:-\n
                 [
                     {
                         'symbol': 'BTCUSDT',
