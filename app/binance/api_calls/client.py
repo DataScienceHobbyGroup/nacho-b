@@ -435,5 +435,62 @@ class Trade:
             recvWindow=recvWindow
         )
 
+    def cancelAllOpenOrders(
+        self,
+        symbol: str,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+            Cancels all active orders on a symbol.
+            This includes OCO orders.
+
+            Weight: 1
+            Data Source: Matching Engine
+
+        Other info
+        ----------
+            Given a symbol, all open orders related to it will cancel
+
+        Parameters
+        ----------
+            symbol (str):
+                Currency symbol.
+
+            recvWindow (int):
+                Number of milliseconds in which to complete the transaction.
+                If timeout, transaction is being cancelled.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (dict):
+                Information confirming the cancellation of each trade that was open
+                and the details of each trade:-\n
+                [
+                    {
+                        'symbol': 'BTCUSDT',
+                        'origClientOrderId': '6uZQaihpXuvhgoICkKv6kI',
+                        'orderId': 4723160,
+                        'orderListId': -1,
+                        'clientOrderId': 'RH5lwa40NhLe0ibLTz0ydv',
+                        'price': '30000.00000000',
+                        'origQty': '1.00000000',
+                        'executedQty': '0.00000000',
+                        'cummulativeQuoteQty': '0.00000000',
+                        'status': 'CANCELED',
+                        'timeInForce': 'GTC',
+                        'type': 'LIMIT',
+                        'side': 'BUY'
+                    }
+                ]
+        """
+        return delete(
+            self._url, 'openOrders',
+            key=self.__key,
+            secret=self.__secret,
+            symbol=symbol.upper(),
+            recvWindow=recvWindow
+        )
+
 
 del(Literal, Optional, date, datetime)
