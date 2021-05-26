@@ -371,7 +371,24 @@ class Trade:
         -------
             (List[dict]):
                 A list of all trades within a given range if set or the past X
-                number of trades either specified or defaulted to 5000
+                number of trades either specified or defaulted to 5000:-
+                [
+                    {
+                        'symbol': 'BTCUSDT',
+                        'id': 675286,
+                        'orderId': 2518667,
+                        'orderListId': -1,
+                        'price': '50000.00000000',
+                        'qty': '0.00019700',
+                        'quoteQty': '9.85000000',
+                        'commission': '0.00000000',
+                        'commissionAsset': 'USDT',
+                        'time': 1621011870116,
+                        'isBuyer': False,
+                        'isMaker': True,
+                        'isBestMatch': True
+                    }
+                ]
         """
         return get(
             self._url, 'myTrades', key=self.__key, secret=self.__secret,
@@ -578,6 +595,70 @@ class Trade:
             symbol=symbol.upper(),
             orderId=orderId,
             origClientOrderId=origClientOrderId,
+            recvWindow=recvWindow
+        )
+
+    def openOrders(
+        self,
+        symbol: Optional[str],
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+            Get all open orders on a symbol. Careful when accessing
+            this with no symbol.
+
+            Weight: 3 for a single symbol;
+            40 when the symbol parameter is omitted
+            Data Source: Database
+
+        Other info
+        ----------
+            If the ``symbol`` is not sent, orders for all symbols
+            will be returned in an array
+
+        Parameters
+        ----------
+            symbol (str):
+                Currency symbol.
+
+            recvWindow (int):
+                Number of milliseconds in which to complete the transaction.
+                If timeout, transaction is being cancelled.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (List[dict]):
+                A list of all open orders for a given symbol or all open
+                orders if no symbol is specified (see cautionary note):-\n
+                    [
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 4759918,
+                            'orderListId': -1,
+                            'clientOrderId': 'iXfVYUhccMcTNnl01TvW3Q',
+                            'price': '30000.00000000',
+                            'origQty': '0.01000000',
+                            'executedQty': '0.00000000',
+                            'cummulativeQuoteQty': '0.00000000',
+                            'status': 'NEW',
+                            'timeInForce': 'GTC',
+                            'type': 'LIMIT',
+                            'side': 'BUY',
+                            'stopPrice': '0.00000000',
+                            'icebergQty': '0.00000000',
+                            'time': 1622045634930,
+                            'updateTime': 1622045634930,
+                            'isWorking': True,
+                            'origQuoteOrderQty': '0.00000000'
+                        }
+                    ]
+        """
+        return get(
+            self._url, 'openOrders',
+            key=self.__key,
+            secret=self.__secret,
+            symbol=symbol.upper() if symbol else None,
             recvWindow=recvWindow
         )
 
