@@ -533,25 +533,27 @@ class Trade:
         Returns
         -------
             (dict):
-                Information confirming the cancellation of each trade that was open
-                and the details of each trade:-\n
-                [
+                Information regarding the trade that was queried:-\n
                     {
                         'symbol': 'BTCUSDT',
-                        'origClientOrderId': '6uZQaihpXuvhgoICkKv6kI',
-                        'orderId': 4723160,
+                        'orderId': 4740711,
                         'orderListId': -1,
-                        'clientOrderId': 'RH5lwa40NhLe0ibLTz0ydv',
+                        'clientOrderId': 'ux4BADmI0BopccaWjvU0r9',
                         'price': '30000.00000000',
-                        'origQty': '1.00000000',
+                        'origQty': '0.01000000',
                         'executedQty': '0.00000000',
                         'cummulativeQuoteQty': '0.00000000',
-                        'status': 'CANCELED',
+                        'status': 'NEW',
                         'timeInForce': 'GTC',
                         'type': 'LIMIT',
-                        'side': 'BUY'
+                        'side': 'BUY',
+                        'stopPrice': '0.00000000',
+                        'icebergQty': '0.00000000',
+                        'time': 1622039616234,
+                        'updateTime': 1622039616234,
+                        'isWorking': True,
+                        'origQuoteOrderQty': '0.00000000'
                     }
-                ]
         """
         return get(
             self._url, 'order',
