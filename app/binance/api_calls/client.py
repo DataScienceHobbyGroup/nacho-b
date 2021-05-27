@@ -687,7 +687,7 @@ class Trade:
         Otherwise most recent orders are returned.
         For some historical orders ``cummulativeQuoteQty`` will be < 0,
         meaning the data is not available at this time.
-        If ``startTime`` and/or ``endTime`` provided, ``orderId`` is not 
+        If ``startTime`` and/or ``endTime`` provided, ``orderId`` is not
         required.
 
         Parameters
@@ -746,7 +746,8 @@ class Trade:
             ]
         """
         return get(
-            self._url, 'allOrders',
+            self._url, 
+            'allOrders',
             key=self.__key,
             secret=self.__secret,
             symbol=symbol.upper(),
@@ -754,6 +755,57 @@ class Trade:
             startTime=startTime,
             endTime=endTime,
             limit=limit,
+            recvWindow=recvWindow
+        )
+
+    def account(
+        self,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+        Get current account information.
+
+        Weight: 10
+        Data Source: Memory => Database
+
+        Other info
+        ----------
+
+        Parameters
+        ----------
+            recvWindow (int):
+                Time window in milliseconds to execute the order.
+                The value cannot be greater than 60000.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (List[dict]):
+                A list of all trades within a given range if set or the past X
+                number of trades either specified or defaulted to 5000:-
+                [
+                    {
+                        'symbol': 'BTCUSDT',
+                        'id': 675286,
+                        'orderId': 2518667,
+                        'orderListId': -1,
+                        'price': '50000.00000000',
+                        'qty': '0.00019700',
+                        'quoteQty': '9.85000000',
+                        'commission': '0.00000000',
+                        'commissionAsset': 'USDT',
+                        'time': 1621011870116,
+                        'isBuyer': False,
+                        'isMaker': True,
+                        'isBestMatch': True
+                    }
+                ]
+        """
+        return get(
+            self._url,
+            'account',
+             key=self.__key,
+            secret=self.__secret,
             recvWindow=recvWindow
         )
 

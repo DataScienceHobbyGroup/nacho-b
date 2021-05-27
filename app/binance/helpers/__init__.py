@@ -137,6 +137,7 @@ def post(
 
     return request('post', url, endpoint, key, secret, **params)
 
+
 def delete(
     url: str,
     endpoint: str,
@@ -190,6 +191,7 @@ def delete(
     from .requests import request
 
     return request('delete', url, endpoint, key, secret, **params)
+
 
 def to_timestamp(
     value: Union[str, date, datetime],
