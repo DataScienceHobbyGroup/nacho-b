@@ -804,8 +804,154 @@ class Trade:
         return get(
             self._url,
             'account',
-             key=self.__key,
+            key=self.__key,
             secret=self.__secret,
+            recvWindow=recvWindow
+        )
+
+    def oco(
+        self,
+        symbol: str,
+        side: Literal['BUY', 'SELL'],
+        quantity: float,
+        price: float,
+        stopPrice: float,
+        listClientOrderId: Optional[str] = None,
+        limitClientOrderId: Optional[str] = None,
+        limitIcebergQty: Optional[float] = None,
+        stopClientOrderId: Optional[str] = None,
+        stopLimitPrice: Optional[float] = None,
+        stopIcebergQty: Optional[float] = None,
+        stopLimitTimeInForce: Optional[Literal['GTC', 'FOK', 'IOC']] = None,
+        newOrderRespType: Optional[ResponseTypeOptions] = None,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+        Send in a new OCO
+
+        Weight: 1
+        Data Source: Matching Engine
+
+        Other info
+        ----------
+        Price Restrictions:
+            SELL: Limit Price > Last Price > Stop Price
+            BUY: Limit Price < Last Price < Stop Price
+
+        Quantity Restrictions:
+            Both legs must have the same quantity
+            ICEBERG quantities however do not have to be the same.
+
+        Order Rate Limit
+            OCO counts as 2 orders against the order rate limit.
+
+        Parameters
+        ----------
+            symbol (str):
+                Currency symbol.
+
+            side (Literal['BUY', 'SELL']):
+                Whether the position is long/buy or short/sell
+
+            quantity (float):
+                The quantity of the asset to buy.
+
+            price (float):
+                The price of which to buy an asset at. Remember:-
+                    SELL: Limit Price > Last Price > Stop Price
+                    BUY: Limit Price < Last Price < Stop Price
+
+            stopPrice (float):
+                When the price falls to this level a market order is created to
+                essentially close the position due to the trade going against
+                the intended side.
+
+            listClientOrderId (Optional[str]):
+                A unique Id for the entire orderList
+
+            limitClientOrderId (Optional[str]):
+                A unique Id for the limit order
+
+            limitIcebergQty (Optional[float]):
+                The quantity of the asset to buy.
+
+            stopClientOrderId (Optional[str]):
+                A unique Id for the stop loss/stop loss limit leg.
+
+            stopLimitPrice (Optional[float]):
+                When the price falls to this level a limit order is created to
+                essentially close the position at the specified price due to
+                the trade going against the intended side. Usually used to
+                avoid gapping past the stopPrice. If provided,
+                ``stopLimitTimeInForce`` is required.
+
+            stopIcebergQty (Optional[float]):
+                Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to
+                create an iceberg order.
+                Defaults to ``None``.
+
+            stopLimitTimeInForce (Optional[Literal['GTC', 'FOK', 'IOC']]):
+                Must be passed when using ``stopPriceLimit``
+                Valid values are:
+                GTC 	Good Till Canceled
+                    An order will be on the book unless the order is canceled.
+                IOC 	Immediate Or Cancel
+                    An order will try to fill the order as much as it can
+                    before the order expires.
+                FOK 	Fill or Kill
+                    An order will expire if the full order cannot be filled
+                    upon execution.
+
+            newOrderRespType (Optional[ResponseTypeOptions]):
+                Set the response JSON. ACK, RESULT, or FULL; MARKET and LIMIT
+                order types default to FULL, all other orders default to ACK.
+
+            recvWindow (int):
+                Time window in milliseconds to execute the order.
+                The value cannot be greater than 60000.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (List[dict]):
+                A list of all trades within a given range if set or the past X
+                number of trades either specified or defaulted to 5000:-
+                [
+                    {
+                        'symbol': 'BTCUSDT',
+                        'id': 675286,
+                        'orderId': 2518667,
+                        'orderListId': -1,
+                        'price': '50000.00000000',
+                        'qty': '0.00019700',
+                        'quoteQty': '9.85000000',
+                        'commission': '0.00000000',
+                        'commissionAsset': 'USDT',
+                        'time': 1621011870116,
+                        'isBuyer': False,
+                        'isMaker': True,
+                        'isBestMatch': True
+                    }
+                ]
+        """
+        return post(
+            self._url,
+            'account',
+            key=self.__key,
+            secret=self.__secret,
+            symbol=symbol,
+            side=side,
+            quantity=quantity,
+            limitClientOrderId=limitClientOrderId,
+            price=price,
+            stopPrice=stopPrice,
+            listClientOrderId=listClientOrderId,
+            limitIcebergQty=limitIcebergQty,
+            stopClientOrderId=stopClientOrderId,
+            stopLimitPrice=stopLimitPrice,
+            stopIcebergQty=stopIcebergQty,
+            stopLimitTimeInForce=stopLimitTimeInForce,
+            newOrderRespType=newOrderRespType,
             recvWindow=recvWindow
         )
 
