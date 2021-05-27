@@ -188,10 +188,6 @@ class MarketData:
         Weight: 5
         Data Source: Database
 
-        Important
-        ---------
-        Currently not working.
-
         Parameters
         ----------
             symbol (str):

@@ -90,8 +90,7 @@ class Trade:
             Same ``newClientOrderId`` can be accepted only when the previous
             one is filled, otherwise the order will be rejected.
             Trigger order price rules against market price for both ``MARKET``
-            and
-            ``LIMIT`` versions:
+            and ``LIMIT`` versions:
             Price above market price: STOP_LOSS -> BUY, TAKE_PROFIT -> SELL
             Price below market price: STOP_LOSS -> SELL, TAKE_PROFIT -> BUY
 
@@ -474,15 +473,16 @@ class Trade:
         recvWindow: int = 5000
     ) -> dict:
         """
-            Cancels all active orders on a symbol.
-            This includes OCO orders.
+        Cancel all active orders on a symbol.
 
-            Weight: 1
-            Data Source: Matching Engine
+        This includes OCO orders.
+
+        Weight: 1
+        Data Source: Matching Engine
 
         Other info
         ----------
-            Given a symbol, all open orders related to it will cancel
+            Given a symbol, all open orders related to it will cancel.
 
         Parameters
         ----------
@@ -496,26 +496,27 @@ class Trade:
 
         Returns
         -------
-            (List[dict]):
-                Information confirming the cancellation of each trade that was
-                open and the details of each trade:-\n
-                [
-                    {
-                        'symbol': 'BTCUSDT',
-                        'origClientOrderId': '6uZQaihpXuvhgoICkKv6kI',
-                        'orderId': 4723160,
-                        'orderListId': -1,
-                        'clientOrderId': 'RH5lwa40NhLe0ibLTz0ydv',
-                        'price': '30000.00000000',
-                        'origQty': '1.00000000',
-                        'executedQty': '0.00000000',
-                        'cummulativeQuoteQty': '0.00000000',
-                        'status': 'CANCELED',
-                        'timeInForce': 'GTC',
-                        'type': 'LIMIT',
-                        'side': 'BUY'
-                    }
-                ]
+            (List[dict])
+            Information confirming the cancellation of each trade that was
+            open and the details of each trade.
+
+            [
+                {
+                    'symbol': 'BTCUSDT',
+                    'origClientOrderId': '6uZQaihpXuvhgoICkKv6kI',
+                    'orderId': 4723160,
+                    'orderListId': -1,
+                    'clientOrderId': 'RH5lwa40NhLe0ibLTz0ydv',
+                    'price': '30000.00000000',
+                    'origQty': '1.00000000',
+                    'executedQty': '0.00000000',
+                    'cummulativeQuoteQty': '0.00000000',
+                    'status': 'CANCELED',
+                    'timeInForce': 'GTC',
+                    'type': 'LIMIT',
+                    'side': 'BUY'
+                }
+            ]
         """
         return delete(
             self._url, 'openOrders',
@@ -533,10 +534,10 @@ class Trade:
         recvWindow: int = 5000
     ) -> dict:
         """
-            Check an order's status.
+        Check an order's status.
 
-            Weight: 2
-            Data Source: Database
+        Weight: 2
+        Data Source: Database
 
         Other info
         ----------
@@ -557,7 +558,7 @@ class Trade:
                 When the order is created a clientOrderId is generated if
                 not specified. This is equivelant to origClientOrderId and
                 can be used in this parameter
-                
+
             recvWindow (int):
                 Number of milliseconds in which to complete the transaction.
                 If timeout, transaction is being cancelled.
@@ -565,28 +566,29 @@ class Trade:
 
         Returns
         -------
-            (dict):
-                Information regarding the trade that was queried:-\n
-                    {
-                        'symbol': 'BTCUSDT',
-                        'orderId': 4740711,
-                        'orderListId': -1,
-                        'clientOrderId': 'ux4BADmI0BopccaWjvU0r9',
-                        'price': '30000.00000000',
-                        'origQty': '0.01000000',
-                        'executedQty': '0.00000000',
-                        'cummulativeQuoteQty': '0.00000000',
-                        'status': 'NEW',
-                        'timeInForce': 'GTC',
-                        'type': 'LIMIT',
-                        'side': 'BUY',
-                        'stopPrice': '0.00000000',
-                        'icebergQty': '0.00000000',
-                        'time': 1622039616234,
-                        'updateTime': 1622039616234,
-                        'isWorking': True,
-                        'origQuoteOrderQty': '0.00000000'
-                    }
+            (dict)
+            Information regarding the trade that was queried.
+
+            {
+                'symbol': 'BTCUSDT',
+                'orderId': 4740711,
+                'orderListId': -1,
+                'clientOrderId': 'ux4BADmI0BopccaWjvU0r9',
+                'price': '30000.00000000',
+                'origQty': '0.01000000',
+                'executedQty': '0.00000000',
+                'cummulativeQuoteQty': '0.00000000',
+                'status': 'NEW',
+                'timeInForce': 'GTC',
+                'type': 'LIMIT',
+                'side': 'BUY',
+                'stopPrice': '0.00000000',
+                'icebergQty': '0.00000000',
+                'time': 1622039616234,
+                'updateTime': 1622039616234,
+                'isWorking': True,
+                'origQuoteOrderQty': '0.00000000'
+            }
         """
         return get(
             self._url, 'order',
@@ -604,17 +606,17 @@ class Trade:
         recvWindow: int = 5000
     ) -> dict:
         """
-            Get all open orders on a symbol. Careful when accessing
-            this with no symbol.
+        Get all open orders on a symbol.
 
-            Weight: 3 for a single symbol;
-            40 when the symbol parameter is omitted
-            Data Source: Database
+        Careful when accessing this with no symbol.
+
+        Weight: 3 for a single symbol; 40 when the symbol parameter is omitted
+        Data Source: Database
 
         Other info
         ----------
             If the ``symbol`` is not sent, orders for all symbols
-            will be returned in an array
+            will be returned in an array.
 
         Parameters
         ----------
@@ -628,31 +630,32 @@ class Trade:
 
         Returns
         -------
-            (List[dict]):
-                A list of all open orders for a given symbol or all open
-                orders if no symbol is specified (see cautionary note):-\n
-                    [
-                        {
-                            'symbol': 'BTCUSDT',
-                            'orderId': 4759918,
-                            'orderListId': -1,
-                            'clientOrderId': 'iXfVYUhccMcTNnl01TvW3Q',
-                            'price': '30000.00000000',
-                            'origQty': '0.01000000',
-                            'executedQty': '0.00000000',
-                            'cummulativeQuoteQty': '0.00000000',
-                            'status': 'NEW',
-                            'timeInForce': 'GTC',
-                            'type': 'LIMIT',
-                            'side': 'BUY',
-                            'stopPrice': '0.00000000',
-                            'icebergQty': '0.00000000',
-                            'time': 1622045634930,
-                            'updateTime': 1622045634930,
-                            'isWorking': True,
-                            'origQuoteOrderQty': '0.00000000'
-                        }
-                    ]
+            (List[dict])
+            A list of all open orders for a given symbol or all open orders,
+            if no symbol is specified (see cautionary note).
+
+            [
+                {
+                    'symbol': 'BTCUSDT',
+                    'orderId': 4759918,
+                    'orderListId': -1,
+                    'clientOrderId': 'iXfVYUhccMcTNnl01TvW3Q',
+                    'price': '30000.00000000',
+                    'origQty': '0.01000000',
+                    'executedQty': '0.00000000',
+                    'cummulativeQuoteQty': '0.00000000',
+                    'status': 'NEW',
+                    'timeInForce': 'GTC',
+                    'type': 'LIMIT',
+                    'side': 'BUY',
+                    'stopPrice': '0.00000000',
+                    'icebergQty': '0.00000000',
+                    'time': 1622045634930,
+                    'updateTime': 1622045634930,
+                    'isWorking': True,
+                    'origQuoteOrderQty': '0.00000000'
+                }
+            ]
         """
         return get(
             self._url, 'openOrders',
