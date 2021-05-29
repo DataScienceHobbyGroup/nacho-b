@@ -31,7 +31,7 @@ def response_handler(func: Callable[..., Any]) -> Callable[..., Any]:
 
             key Optional[str]:
                 Binance API key.
-                Defaults to ``None``.
+                Defaults to `None`.
 
             **params (Any):
                 symbol (str):
@@ -115,7 +115,7 @@ def request(
 
         key Optional[str]:
             Binance API key.
-            Defaults to ``None``.
+            Defaults to `None`.
 
         **params (Any):
             symbol (str):
