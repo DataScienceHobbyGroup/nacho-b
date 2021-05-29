@@ -685,11 +685,11 @@ class Trade:
         Other info
         ----------
 
-        If ``orderId`` is set, it will get orders >= that ``orderId``.
+        If `orderId` is set, it will get orders >= that `orderId`.
         Otherwise most recent orders are returned.
-        For some historical orders ``cummulativeQuoteQty`` will be < 0,
+        For some historical orders `cummulativeQuoteQty` will be < 0,
         meaning the data is not available at this time.
-        If ``startTime`` and/or ``endTime`` provided, ``orderId`` is not
+        If `startTime` and/or `endTime` provided, `orderId` is not
         required.
 
         Parameters
@@ -703,27 +703,27 @@ class Trade:
 
             startTime (Optional[Union[str, date, datetime]]):
                 TODO: confirm if time is expressed in ms
-                Optional: The point in history to get data from.
+                The point in history to get data from.
 
             endTime (Optional[Union[str, date, datetime]]):
                 TODO: confirm if time is expressed in ms
-                Optional: The point in history to get data to.
+                The point in history to get data to.
 
             limit (Optional[int]):
-                Optional: The number of trades to get starting from
-                now - ``limit``
-                Example: if ``limit`` is set to 10 the API will return
-                the 10 previous trades.
+                The number of trades to get starting from now.
+                Example: if `limit` is set to 10 the API will return the 10
+                previous trades.
 
             recvWindow (int):
                 Number of milliseconds in which to complete the transaction.
                 If timeout, transaction is being cancelled.
-                Defaults to 5000.
+                Defaults to `5000`.
 
         Returns
         -------
             (List[dict])
             A list of all orders for a given symbol.
+
             [
                 {
                     'symbol': 'BTCUSDT',
@@ -748,16 +748,9 @@ class Trade:
             ]
         """
         return get(
-            self._url, 
-            'allOrders',
-            key=self.__key,
-            secret=self.__secret,
-            symbol=symbol.upper(),
-            orderId=orderId,
-            startTime=startTime,
-            endTime=endTime,
-            limit=limit,
-            recvWindow=recvWindow
+            self._url, 'allOrders', key=self.__key, secret=self.__secret,
+            symbol=symbol.upper(), orderId=orderId, startTime=startTime,
+            endTime=endTime, limit=limit, recvWindow=recvWindow
         )
 
     def account(
@@ -777,37 +770,35 @@ class Trade:
         ----------
             recvWindow (int):
                 Time window in milliseconds to execute the order.
-                The value cannot be greater than 60000.
-                Defaults to 5000.
+                The value cannot be greater than `60000`.
+                Defaults to `5000`.
 
         Returns
         -------
-            (List[dict]):
-                A list of all trades within a given range if set or the past X
-                number of trades either specified or defaulted to 5000:-
-                [
-                    {
-                        'symbol': 'BTCUSDT',
-                        'id': 675286,
-                        'orderId': 2518667,
-                        'orderListId': -1,
-                        'price': '50000.00000000',
-                        'qty': '0.00019700',
-                        'quoteQty': '9.85000000',
-                        'commission': '0.00000000',
-                        'commissionAsset': 'USDT',
-                        'time': 1621011870116,
-                        'isBuyer': False,
-                        'isMaker': True,
-                        'isBestMatch': True
-                    }
-                ]
+            (List[dict])
+            A list of all trades within a given range if set or the past X
+            number of trades either specified or defaulted to `5000`
+
+            [
+                {
+                    'symbol': 'BTCUSDT',
+                    'id': 675286,
+                    'orderId': 2518667,
+                    'orderListId': -1,
+                    'price': '50000.00000000',
+                    'qty': '0.00019700',
+                    'quoteQty': '9.85000000',
+                    'commission': '0.00000000',
+                    'commissionAsset': 'USDT',
+                    'time': 1621011870116,
+                    'isBuyer': False,
+                    'isMaker': True,
+                    'isBestMatch': True
+                }
+            ]
         """
         return get(
-            self._url,
-            'account',
-             key=self.__key,
-            secret=self.__secret,
+            self._url, 'account', key=self.__key, secret=self.__secret,
             recvWindow=recvWindow
         )
 
