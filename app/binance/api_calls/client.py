@@ -746,7 +746,7 @@ class Trade:
             ]
         """
         return get(
-            self._url, 
+            self._url,
             'allOrders',
             key=self.__key,
             secret=self.__secret,
@@ -913,30 +913,69 @@ class Trade:
 
         Returns
         -------
-            (List[dict]):
-                A list of all trades within a given range if set or the past X
-                number of trades either specified or defaulted to 5000:-
-                [
-                    {
-                        'symbol': 'BTCUSDT',
-                        'id': 675286,
-                        'orderId': 2518667,
-                        'orderListId': -1,
-                        'price': '50000.00000000',
-                        'qty': '0.00019700',
-                        'quoteQty': '9.85000000',
-                        'commission': '0.00000000',
-                        'commissionAsset': 'USDT',
-                        'time': 1621011870116,
-                        'isBuyer': False,
-                        'isMaker': True,
-                        'isBestMatch': True
-                    }
-                ]
+            (Dict[str, List[dict]]):
+                Information related to the overall OCO order, a list of orders
+                and a report detailing the orders:-
+                {
+                    'orderListId': 4922,
+                    'contingencyType': 'OCO',
+                    'listStatusType': 'EXEC_STARTED',
+                    'listOrderStatus': 'EXECUTING',
+                    'listClientOrderId': 'PLNwO0VkIhqTaOyTbjzMJt',
+                    'transactionTime': 1622390178451,
+                    'symbol': 'BTCUSDT',
+                    'orders':
+                    [
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730856,
+                            'clientOrderId': 'aRVtxZ0ytCpU5vbRSagtS1'
+                        },
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730857,
+                            'clientOrderId': 'cNhPm3TRaLEmqTrAHXq1wL'
+                        }
+                    ],
+                    'orderReports':
+                    [
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730856,
+                            'orderListId': 4922,
+                            'clientOrderId': 'aRVtxZ0ytCpU5vbRSagtS1',
+                            'transactTime': 1622390178451,
+                            'price': '51000.00000000',
+                            'origQty': '0.01000000',
+                            'executedQty': '0.00000000',
+                            'cummulativeQuoteQty': '0.00000000',
+                            'status': 'NEW',
+                            'timeInForce': 'GTC',
+                            'type': 'STOP_LOSS_LIMIT',
+                            'side': 'BUY',
+                            'stopPrice': '50000.00000000'
+                        },
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730857,
+                            'orderListId': 4922,
+                            'clientOrderId': 'cNhPm3TRaLEmqTrAHXq1wL',
+                            'transactTime': 1622390178451,
+                            'price': '30000.00000000',
+                            'origQty': '0.01000000',
+                            'executedQty': '0.00000000',
+                            'cummulativeQuoteQty': '0.00000000',
+                            'status': 'NEW',
+                            'timeInForce': 'GTC',
+                            'type': 'LIMIT_MAKER',
+                            'side': 'BUY'
+                        }
+                    ]
+                }
         """
         return post(
             self._url,
-            'account',
+            'order/oco',
             key=self.__key,
             secret=self.__secret,
             symbol=symbol,
