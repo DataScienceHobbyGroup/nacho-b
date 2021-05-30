@@ -11,7 +11,7 @@ from typing import Any, Union
 
 def sign(secret: Union[bytes, str], **params: Any) -> dict:
     """
-    Create a ``timestamp`` based HMAC signature.
+    Create a `timestamp` based HMAC signature.
 
     Parameters
     ----------
@@ -21,7 +21,7 @@ def sign(secret: Union[bytes, str], **params: Any) -> dict:
     Returns
     -------
         (dict)
-        Request parameters with ``HMAC`` signature.
+        Request parameters with `HMAC` signature.
     """
     # Import standard modules
     import hmac

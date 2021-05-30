@@ -43,15 +43,15 @@ class Binance:
 
             url (str):
                 Server URL.
-                Defaults to ``https://testnet.binance.vision/api/v3``.
+                Defaults to `https://testnet.binance.vision/api/v3`.
 
         Arguments
         ---------
             get (MarketData):
-                Object for calling on ``Market Data Endpoints`` Binance APIs.
+                Object for calling on `Market Data Endpoints` Binance APIs.
 
             trade (Trade):
-                Object for calling on ``Spot Account/Trade`` Binance APIs.
+                Object for calling on `Spot Account/Trade` Binance APIs.
 
             url (str):
                 Server URL where the requests will be sent to.
@@ -72,12 +72,12 @@ class Binance:
     @classmethod
     def from_env_file(cls, path: str):
         """
-        Load credentials from ``.env`` file.
+        Load credentials from `.env` file.
 
         Parameters
         ----------
             path (str):
-                Path to the ``.env`` file containing the credentials.
+                Path to the `.env` file containing the credentials.
         """
         # Import standard modules
         from dotenv import load_dotenv
@@ -91,8 +91,8 @@ class Binance:
 
         if not all([key, secret]):
             err = (
-                '``API_KEY`` and ``API_SECRET`` are mandatory attributes.\n'
-                'Please make sure they are contained in your ``.env`` file'
+                '`API_KEY` and `API_SECRET` are mandatory attributes.\n'
+                'Please make sure they are contained in your `.env` file'
             )
             raise KeyError(err)
 
@@ -101,12 +101,12 @@ class Binance:
     @classmethod
     def from_json_file(cls, path: str):
         """
-        Load credentials from a ``JSON`` file.
+        Load credentials from a `JSON` file.
 
         Parameters
         ----------
             path (str):
-                Path to the ``JSON`` file containing the credentials.
+                Path to the `JSON` file containing the credentials.
         """
         # Import standard modules
         from json import load
@@ -120,8 +120,8 @@ class Binance:
 
         if not all([key, secret]):
             err = (
-                '``API_KEY`` and ``API_SECRET`` are mandatory attributes.\n'
-                'Please make sure they are contained in your ``.json`` file'
+                '`API_KEY` and `API_SECRET` are mandatory attributes.\n'
+                'Please make sure they are contained in your `.json` file'
             )
             KeyError(err)
 
@@ -146,14 +146,14 @@ class Binance:
 
     @property
     def public(self) -> MarketData:
-        """Return all ``Market Data Endpoint`` APIs."""
+        """Return all `Market Data Endpoint` APIs."""
         if not self._public:
             self._public = MarketData(self.__key, self._url)
         return self._public
 
     @property
     def trade(self) -> Trade:
-        """Return all ``Spot Account/Trade`` APIs."""
+        """Return all `Spot Account/Trade` APIs."""
         if not self._trade:
             self._trade = Trade(self.__key, self.__secret, self._url)
         return self._trade

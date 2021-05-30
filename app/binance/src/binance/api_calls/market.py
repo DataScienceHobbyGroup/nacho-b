@@ -1,5 +1,5 @@
 """
-Collection of ``Market Data Endpoint`` APIs.
+Collection of `Market Data Endpoint` APIs.
 
 Date: 2021-05-25
 Author: Vitali Lupusor
@@ -15,7 +15,7 @@ from ..helpers.type_literals import KlineInterval, OrderBookLimit  # type: ignor
 
 
 class MarketData:
-    """Collection of ``Market Data Endpoint`` APIs."""
+    """Collection of `Market Data Endpoint` APIs."""
 
     def __init__(
         self, key: Optional[str] = None, url: Optional[str] = None
@@ -50,9 +50,7 @@ class MarketData:
 
         return datetime.fromtimestamp(response['serverTime'] / 1000)
 
-    def exchangeInfo(
-        self, symbol: Optional[str] = None, symbols: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
+    def exchangeInfo(self, *symbols: str) -> Dict[str, Any]:
         """
         Get current exchange trading rules and symbol information.
 
@@ -61,14 +59,8 @@ class MarketData:
 
         Parameters
         ----------
-            **params:
-                symbol (Optional[str]):
-                    Currency symbol.
-                    Defaults to ``None``.
-
-                symbols (Optional[List[str]]):
-                    List of currency symbol.
-                    Defaults to ``None``.
+            *symbols (str):
+                Currency symbols.
 
         Raises
         ------
@@ -81,15 +73,12 @@ class MarketData:
             (Dict[str, Any])
             TODO: Add description.
         """
-        _symbol = symbol.upper() if symbol else None
-        _symbols = str(symbols).upper() \
+        _symbols = str([symbol.upper() for symbol in symbols]) \
             .replace(' ', '') \
             .replace('\'', '"') \
             if symbols else None
 
-        return get(
-            self._url, 'exchangeInfo', symbol=_symbol, symbols=_symbols
-        )
+        return get(self._url, 'exchangeInfo', symbols=_symbols)
 
     def orderBook(
         self, symbol: str, limit: OrderBookLimit = 100
@@ -113,7 +102,7 @@ class MarketData:
 
             limit (Literal[5, 10, 20, 50, 100, 500, 1000, 5000]):
                 The depth of the registry.
-                Defaults to ``100``.
+                Defaults to `100`.
 
         Returns
         -------
@@ -154,8 +143,8 @@ class MarketData:
 
             limit (int):
                 TODO: Add description.
-                Takes values between ``1`` and ``1000``.
-                Defaults to ``500``.
+                Takes values between `1` and `1000`.
+                Defaults to `500`.
 
         Returns
         -------
@@ -195,8 +184,8 @@ class MarketData:
 
             limit (int):
                 TODO: Add description.
-                Takes values between ``1`` and ``5000``.
-                Defaults to ``500``.
+                Takes values between `1` and `5000`.
+                Defaults to `500`.
 
             fromId (Optional[int]):
                 TODO: Add description.
@@ -236,9 +225,9 @@ class MarketData:
 
         Description
         -----------
-            If ``startTime`` and ``endTime`` are sent, time between
-            ``startTime`` and ``endTime`` must be less than 1 hour.
-            If ``fromId``, ``startTime`` and ``endTime`` are not sent, the most
+            If `startTime` and `endTime` are sent, time between
+            `startTime` and `endTime` must be less than 1 hour.
+            If `fromId`, `startTime` and `endTime` are not sent, the most
             recent aggregate trades will be returned.
 
         Weight: 1
@@ -262,8 +251,8 @@ class MarketData:
 
             limit (int):
                 TODO: Add description.
-                Takes values between ``1`` and ``1000``.
-                Defaults to ``500``.
+                Takes values between `1` and `1000`.
+                Defaults to `500`.
 
         Returns
         -------
@@ -306,7 +295,7 @@ class MarketData:
         Get kline/candlestick bars for a symbol.
 
         Klines are uniquely identified by their open time.
-        If ``startTime`` and ``endTime`` are not sent, the most recent klines
+        If `startTime` and `endTime` are not sent, the most recent klines
         are returned.
 
         Weight: 1
@@ -334,8 +323,8 @@ class MarketData:
 
             limit (int):
                 TODO: Add description.
-                Takes values between ``1`` and ``1000``.
-                Defaults to ``500``.
+                Takes values between `1` and `1000`.
+                Defaults to `500`.
 
         Returns
         -------
@@ -478,7 +467,7 @@ class MarketData:
         """
         Get the best price/qty on the order book for a symbol or symbols.
 
-        If the symbol is not sent, ``bookTickers`` for all symbols will be
+        If the symbol is not sent, `bookTickers` for all symbols will be
         returned in an array.
 
         Weight: 1; 2 when the symbol parameter is omitted

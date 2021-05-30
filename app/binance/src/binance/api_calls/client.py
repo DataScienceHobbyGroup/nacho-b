@@ -1,5 +1,5 @@
 """
-Collection of ``Spot Account/Trades`` APIs.
+Collection of `Spot Account/Trades` APIs.
 
 Date: 2021-05-25
 Author: Vitali Lupusor
@@ -15,7 +15,7 @@ from ..helpers.type_literals import ResponseTypeOptions, TypeOptions  # type: ig
 
 
 class Trade:
-    """Collection of ``Spot Account/Trades`` APIs."""
+    """Collection of `Spot Account/Trades` APIs."""
 
     def __init__(
         self, key: str, secret: str, url: Optional[str] = None
@@ -61,36 +61,36 @@ class Trade:
 
         Other info
         ----------
-            ``LIMIT_MAKER`` are ``LIMIT`` orders that will be rejected, if they
+            `LIMIT_MAKER` are `LIMIT` orders that will be rejected, if they
             would immediately match and trade as a taker.
-            ``STOP_LOSS`` and ``TAKE_PROFIT`` will execute a ``MARKET`` order
-            when the ``stopPrice`` is reached.
-            Any ``LIMIT`` or ``LIMIT_MAKER`` type order can be made an iceberg
-            order by sending an ``icebergQty``.
-            Any order with an ``icebergQty`` MUST have ``timeInForce`` set to
-            ``GTC``.
-            ``MARKET`` orders using the quantity field specifies the amount of
+            `STOP_LOSS` and `TAKE_PROFIT` will execute a `MARKET` order when
+            the `stopPrice` is reached.
+            Any `LIMIT` or `LIMIT_MAKER` type order can be made an iceberg
+            order by sending an `icebergQty`.
+            Any order with an `icebergQty` MUST have `timeInForce` set to
+            `GTC`.
+            `MARKET` orders using the quantity field specifies the amount of
             the base asset the user wants to buy or sell at the market price.
-            For example, sending a ``MARKET`` order on BTCUSDT will specify how
+            For example, sending a `MARKET` order on BTCUSDT will specify how
             much BTC the user is buying or selling.
-            ``MARKET`` orders using ``quoteOrderQty`` specifies the amount the
+            `MARKET` orders using `quoteOrderQty` specifies the amount the
             user wants to spend (when buying) or receive (when selling) the
             quote asset; the correct quantity will be determined based on the
-            market liquidity and ``quoteOrderQty``.
+            market liquidity and `quoteOrderQty`.
 
             Using BTCUSDT as an example:
-            On the BUY side, the order will buy as many BTC as
-            ``quoteOrderQty`` USDT can.
+            On the BUY side, the order will buy as many BTC as `quoteOrderQty`
+            USDT can.
             On the SELL side, the order will sell as much BTC needed to receive
-            ``quoteOrderQty`` USDT.
-            ``MARKET`` orders using ``quoteOrderQty`` will not break
-            ``LOT_SIZE`` filter rules; the order will execute a quantity that
+            `quoteOrderQty` USDT.
+            `MARKET` orders using `quoteOrderQty` will not break
+            `LOT_SIZE` filter rules; the order will execute a quantity that
             will have the notional value as close as possible to
-            ``quoteOrderQty``.
-            Same ``newClientOrderId`` can be accepted only when the previous
+            `quoteOrderQty`.
+            Same `newClientOrderId` can be accepted only when the previous
             one is filled, otherwise the order will be rejected.
-            Trigger order price rules against market price for both ``MARKET``
-            and ``LIMIT`` versions:
+            Trigger order price rules against market price for both `MARKET`
+            and `LIMIT` versions:
             Price above market price: STOP_LOSS -> BUY, TAKE_PROFIT -> SELL
             Price below market price: STOP_LOSS -> SELL, TAKE_PROFIT -> BUY
 
@@ -107,32 +107,32 @@ class Trade:
 
             timeInForce (Optional[TODO]):
                 TODO: Add description.
-                Requred, if ``type`` in [
-                    ``LIMIT``, ``STOP_LOSS_LIMIT``, ``TAKE_PROFIT_LIMIT``
+                Requred, if `type` in [
+                    `LIMIT`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT_LIMIT`
                 ].
-                Defaults to ``None``.
+                Defaults to `None`.
 
             quantity (Optional[float]):
                 TODO: It appears to be mandatory, but the documentation says
                 otherwise. Check it!
-                Requred, if ``type`` in [
-                    ``LIMIT``, ``MARKET``, ``STOP_LOSS``, ``STOP_LOSS_LIMIT``,
-                    ``TAKE_PROFIT``, ``TAKE_PROFIT_LIMIT``, ``LIMIT_MAKER``
+                Requred, if `type` in [
+                    `LIMIT`, `MARKET`, `STOP_LOSS`, `STOP_LOSS_LIMIT`,
+                    `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`, `LIMIT_MAKER`
                 ].
-                Defaults to ``None``.
+                Defaults to `None`.
 
             quoteOrderQty (Optional[float]):
                 TODO: Add description.
-                Requred, if ``type`` == ``MARKET``.
-                Defaults to ``None``.
+                Requred, if `type` == `MARKET`.
+                Defaults to `None`.
 
             price (Optional[float]):
                 TODO: Add description.
-                Requred, if ``type`` in [
-                    ``LIMIT``, ``STOP_LOSS_LIMIT``, ``TAKE_PROFIT_LIMIT``,
-                    ``LIMIT_MAKER``
+                Requred, if `type` in [
+                    `LIMIT`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT_LIMIT`,
+                    `LIMIT_MAKER`
                 ].
-                Defaults to ``None``.
+                Defaults to `None`.
 
             newClientOrderId (Optional[str]):
                 A unique id among open orders. Automatically generated, if not
@@ -141,25 +141,25 @@ class Trade:
                 it.
 
             stopPrice (Optional[float]):
-                Required, if ``type`` in [
-                    ``STOP_LOSS``, ``STOP_LOSS_LIMIT``, ``TAKE_PROFIT``,
-                    ``TAKE_PROFIT_LIMIT``
+                Required, if `type` in [
+                    `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`,
+                    `TAKE_PROFIT_LIMIT`
                 ]
-                Defaults to ``None``.
+                Defaults to `None`.
 
             icebergQty (Optional[float]):
                 Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to
                 create an iceberg order.
-                Defaults to ``None``.
+                Defaults to `None`.
 
-            newOrderRespType (Optional[TODO]):
+            newOrderRespType (Optional[Literal['ACK', 'RESULT', 'FULL']]):
                 Set the response JSON. ACK, RESULT, or FULL; MARKET and LIMIT
                 order types default to FULL, all other orders default to ACK.
 
             recvWindow (int):
                 Time window in milliseconds to execute the order.
-                The value cannot be greater than 60000.
-                Defaults to 5000.
+                The value cannot be greater than `60000`.
+                Defaults to `5000`.
 
         Returns
         -------
@@ -199,36 +199,36 @@ class Trade:
 
         Other info
         ----------
-            ``LIMIT_MAKER`` are ``LIMIT`` orders that will be rejected, if they
+            `LIMIT_MAKER` are `LIMIT` orders that will be rejected, if they
             would immediately match and trade as a taker.
-            ``STOP_LOSS`` and ``TAKE_PROFIT`` will execute a ``MARKET`` order
-            when the ``stopPrice`` is reached.
-            Any ``LIMIT`` or ``LIMIT_MAKER`` type order can be made an iceberg
-            order by sending an ``icebergQty``.
-            Any order with an ``icebergQty`` MUST have ``timeInForce`` set to
-            ``GTC``.
-            ``MARKET`` orders using the quantity field specifies the amount of
+            `STOP_LOSS` and `TAKE_PROFIT` will execute a `MARKET` order when
+            the `stopPrice` is reached.
+            Any `LIMIT` or `LIMIT_MAKER` type order can be made an iceberg
+            order by sending an `icebergQty`.
+            Any order with an `icebergQty` MUST have `timeInForce` set to
+            `GTC`.
+            `MARKET` orders using the quantity field specifies the amount of
             the base asset the user wants to buy or sell at the market price.
-            For example, sending a ``MARKET`` order on BTCUSDT will specify how
+            For example, sending a `MARKET` order on BTCUSDT will specify how
             much BTC the user is buying or selling.
-            ``MARKET`` orders using ``quoteOrderQty`` specifies the amount the
+            `MARKET` orders using `quoteOrderQty` specifies the amount the
             user wants to spend (when buying) or receive (when selling) the
             quote asset; the correct quantity will be determined based on the
-            market liquidity and ``quoteOrderQty``.
+            market liquidity and `quoteOrderQty`.
 
             Using BTCUSDT as an example:
-            On the BUY side, the order will buy as many BTC as
-            ``quoteOrderQty`` USDT can.
+            On the BUY side, the order will buy as many BTC as `quoteOrderQty`
+            USDT can.
             On the SELL side, the order will sell as much BTC needed to receive
-            ``quoteOrderQty`` USDT.
-            ``MARKET`` orders using ``quoteOrderQty`` will not break
-            ``LOT_SIZE`` filter rules; the order will execute a quantity that
+            `quoteOrderQty` USDT.
+            `MARKET` orders using `quoteOrderQty` will not break
+            `LOT_SIZE` filter rules; the order will execute a quantity that
             will have the notional value as close as possible to
-            ``quoteOrderQty``.
-            Same ``newClientOrderId`` can be accepted only when the previous
+            `quoteOrderQty`.
+            Same `newClientOrderId` can be accepted only when the previous
             one is filled, otherwise the order will be rejected.
-            Trigger order price rules against market price for both ``MARKET``
-            and ``LIMIT`` versions:
+            Trigger order price rules against market price for both `MARKET`
+            and `LIMIT` versions:
             Price above market price: STOP_LOSS -> BUY, TAKE_PROFIT -> SELL
             Price below market price: STOP_LOSS -> SELL, TAKE_PROFIT -> BUY
 
@@ -245,32 +245,32 @@ class Trade:
 
             timeInForce (Optional[TODO]):
                 TODO: Add description.
-                Requred, if ``type`` in [
-                    ``LIMIT``, ``STOP_LOSS_LIMIT``, ``TAKE_PROFIT_LIMIT``
+                Requred, if `type` in [
+                    `LIMIT`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT_LIMIT`
                 ].
-                Defaults to ``None``.
+                Defaults to `None`.
 
             quantity (Optional[float]):
                 TODO: It appears to be mandatory, but the documentation says
                 otherwise. Check it!
-                Requred, if ``type`` in [
-                    ``LIMIT``, ``MARKET``, ``STOP_LOSS``, ``STOP_LOSS_LIMIT``,
-                    ``TAKE_PROFIT``, ``TAKE_PROFIT_LIMIT``, ``LIMIT_MAKER``
+                Requred, if `type` in [
+                    `LIMIT`, `MARKET`, `STOP_LOSS`, `STOP_LOSS_LIMIT`,
+                    `TAKE_PROFIT`, `TAKE_PROFIT_LIMIT`, `LIMIT_MAKER`
                 ].
-                Defaults to ``None``.
+                Defaults to `None`.
 
             quoteOrderQty (Optional[float]):
                 TODO: Add description.
-                Requred, if ``type`` == ``MARKET``.
-                Defaults to ``None``.
+                Requred, if `type` == `MARKET`.
+                Defaults to `None`.
 
             price (Optional[float]):
                 TODO: Add description.
-                Requred, if ``type`` in [
-                    ``LIMIT``, ``STOP_LOSS_LIMIT``, ``TAKE_PROFIT_LIMIT``,
-                    ``LIMIT_MAKER``
+                Requred, if `type` in [
+                    `LIMIT`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT_LIMIT`,
+                    `LIMIT_MAKER`
                 ].
-                Defaults to ``None``.
+                Defaults to `None`.
 
             newClientOrderId (Optional[str]):
                 A unique id among open orders. Automatically generated, if not
@@ -279,25 +279,25 @@ class Trade:
                 it.
 
             stopPrice (Optional[float]):
-                Required, if ``type`` in [
-                    ``STOP_LOSS``, ``STOP_LOSS_LIMIT``, ``TAKE_PROFIT``,
-                    ``TAKE_PROFIT_LIMIT``
+                Required, if `type` in [
+                    `STOP_LOSS`, `STOP_LOSS_LIMIT`, `TAKE_PROFIT`,
+                    `TAKE_PROFIT_LIMIT`
                 ]
-                Defaults to ``None``.
+                Defaults to `None`.
 
             icebergQty (Optional[float]):
                 Used with LIMIT, STOP_LOSS_LIMIT, and TAKE_PROFIT_LIMIT to
                 create an iceberg order.
-                Defaults to ``None``.
+                Defaults to `None`.
 
-            newOrderRespType (Optional[TODO]):
+            newOrderRespType (Optional[Literal['ACK', 'RESULT', 'FULL']]):
                 Set the response JSON. ACK, RESULT, or FULL; MARKET and LIMIT
                 order types default to FULL, all other orders default to ACK.
 
             recvWindow (int):
                 Time window in milliseconds to execute the order.
-                The value cannot be greater than 60000.
-                Defaults to 5000.
+                The value cannot be greater than `60000`.
+                Defaults to `5000`.
 
         Returns
         -------
@@ -331,17 +331,17 @@ class Trade:
 
         Other info
         ----------
-        ``fromId`` TradeId to fetch from. Default gets most recent trades.
-        If ``fromId`` is set, it will get ``id`` >= the ``fromId``.
-        Otherwise most recent trades are returned.
-        ``limit`` Default 500; max 1000.
-        ``recvWindow`` The value cannot be greater than ``60000``
+            `fromId` TradeId to fetch from. Default gets most recent trades.
+            If `fromId` is set, it will get `id` >= the `fromId`.
+            Otherwise most recent trades are returned.
+            `limit` Default 500; max 1000.
+            `recvWindow` value cannot be greater than `60000`.
 
         Parameters
         ----------
             symbol (str):
                 Mandatory: Currency symbol of interest.
-                Example: ``BTCUSDT`` for Bitcoin vs Tether
+                Example: `BTCUSDT` for Bitcoin vs Tether
                 (US dollar stablecoin)
 
             startTime (Optional[Union[str, date, datetime]]):
@@ -357,37 +357,38 @@ class Trade:
 
             limit (Optional[int]):
                 Optional: The number of trades to get starting from
-                now - ``limit``
-                Example: if ``limit`` is set to 10 the API will return
+                now - `limit`
+                Example: if `limit` is set to 10 the API will return
                 the 10 previous trades.
 
             recvWindow (int):
                 Time window in milliseconds to execute the order.
-                The value cannot be greater than 60000.
-                Defaults to 5000.
+                The value cannot be greater than `60000`.
+                Defaults to `5000`.
 
         Returns
         -------
-            (List[dict]):
-                A list of all trades within a given range if set or the past X
-                number of trades either specified or defaulted to 5000:-
-                [
-                    {
-                        'symbol': 'BTCUSDT',
-                        'id': 675286,
-                        'orderId': 2518667,
-                        'orderListId': -1,
-                        'price': '50000.00000000',
-                        'qty': '0.00019700',
-                        'quoteQty': '9.85000000',
-                        'commission': '0.00000000',
-                        'commissionAsset': 'USDT',
-                        'time': 1621011870116,
-                        'isBuyer': False,
-                        'isMaker': True,
-                        'isBestMatch': True
-                    }
-                ]
+            (List[dict])
+            A list of all trades within a given range if set or the past X
+            number of trades either specified or defaulted to `5000`.
+
+            [
+                {
+                    'symbol': 'BTCUSDT',
+                    'id': 675286,
+                    'orderId': 2518667,
+                    'orderListId': -1,
+                    'price': '50000.00000000',
+                    'qty': '0.00019700',
+                    'quoteQty': '9.85000000',
+                    'commission': '0.00000000',
+                    'commissionAsset': 'USDT',
+                    'time': 1621011870116,
+                    'isBuyer': False,
+                    'isMaker': True,
+                    'isBestMatch': True
+                }
+            ]
         """
         return get(
             self._url, 'myTrades', key=self.__key, secret=self.__secret,
@@ -411,7 +412,7 @@ class Trade:
 
         Other info
         ----------
-        Either ``orderId`` or ``origClientOrderId`` must be sent.
+            Either `orderId` or `origClientOrderId` must be sent.
 
         Parameters
         ----------
@@ -434,27 +435,28 @@ class Trade:
             recvWindow (int):
                 Number of milliseconds in which to complete the transaction.
                 If timeout, transaction is being cancelled.
-                Defaults to 5000.
+                Defaults to `5000`.
 
         Returns
         -------
-            (dict):
-                Information regarding the cancelled order:-
-                {
-                    'symbol': 'BTCUSDT',
-                    'origClientOrderId': 'ux4BADmI0BopccaWjvU0r9',
-                    'orderId': 4740711,
-                    'orderListId': -1,
-                    'clientOrderId': 'GmC4kcQCc2t4PAV6wbbpT5',
-                    'price': '30000.00000000',
-                    'origQty': '0.01000000',
-                    'executedQty': '0.00000000',
-                    'cummulativeQuoteQty': '0.00000000',
-                    'status': 'CANCELED',
-                    'timeInForce': 'GTC',
-                    'type': 'LIMIT',
-                    'side': 'BUY'
-                }
+            (dict)
+            Information regarding the cancelled order
+
+            {
+                'symbol': 'BTCUSDT',
+                'origClientOrderId': 'ux4BADmI0BopccaWjvU0r9',
+                'orderId': 4740711,
+                'orderListId': -1,
+                'clientOrderId': 'GmC4kcQCc2t4PAV6wbbpT5',
+                'price': '30000.00000000',
+                'origQty': '0.01000000',
+                'executedQty': '0.00000000',
+                'cummulativeQuoteQty': '0.00000000',
+                'status': 'CANCELED',
+                'timeInForce': 'GTC',
+                'type': 'LIMIT',
+                'side': 'BUY'
+            }
         """
         return delete(
             self._url, 'order',
@@ -492,7 +494,7 @@ class Trade:
             recvWindow (int):
                 Number of milliseconds in which to complete the transaction.
                 If timeout, transaction is being cancelled.
-                Defaults to 5000.
+                Defaults to `5000`.
 
         Returns
         -------
@@ -541,8 +543,8 @@ class Trade:
 
         Other info
         ----------
-            Either ``orderId`` or ``origClientOrderId`` must be sent.
-            For some historical orders ``cummulativeQuoteQty`` will be < 0,
+            Either `orderId` or `origClientOrderId` must be sent.
+            For some historical orders `cummulativeQuoteQty` will be < 0,
             meaning the data is not available at this time.
 
         Parameters
@@ -562,7 +564,7 @@ class Trade:
             recvWindow (int):
                 Number of milliseconds in which to complete the transaction.
                 If timeout, transaction is being cancelled.
-                Defaults to 5000.
+                Defaults to `5000`.
 
         Returns
         -------
@@ -615,7 +617,7 @@ class Trade:
 
         Other info
         ----------
-            If the ``symbol`` is not sent, orders for all symbols
+            If the `symbol` is not sent, orders for all symbols
             will be returned in an array.
 
         Parameters
@@ -626,7 +628,7 @@ class Trade:
             recvWindow (int):
                 Number of milliseconds in which to complete the transaction.
                 If timeout, transaction is being cancelled.
-                Defaults to 5000.
+                Defaults to `5000`.
 
         Returns
         -------
@@ -683,11 +685,11 @@ class Trade:
         Other info
         ----------
 
-        If ``orderId`` is set, it will get orders >= that ``orderId``.
+        If `orderId` is set, it will get orders >= that `orderId`.
         Otherwise most recent orders are returned.
-        For some historical orders ``cummulativeQuoteQty`` will be < 0,
+        For some historical orders `cummulativeQuoteQty` will be < 0,
         meaning the data is not available at this time.
-        If ``startTime`` and/or ``endTime`` provided, ``orderId`` is not
+        If `startTime` and/or `endTime` provided, `orderId` is not
         required.
 
         Parameters
@@ -701,27 +703,27 @@ class Trade:
 
             startTime (Optional[Union[str, date, datetime]]):
                 TODO: confirm if time is expressed in ms
-                Optional: The point in history to get data from.
+                The point in history to get data from.
 
             endTime (Optional[Union[str, date, datetime]]):
                 TODO: confirm if time is expressed in ms
-                Optional: The point in history to get data to.
+                The point in history to get data to.
 
             limit (Optional[int]):
-                Optional: The number of trades to get starting from
-                now - ``limit``
-                Example: if ``limit`` is set to 10 the API will return
-                the 10 previous trades.
+                The number of trades to get starting from now.
+                Example: if `limit` is set to 10 the API will return the 10
+                previous trades.
 
             recvWindow (int):
                 Number of milliseconds in which to complete the transaction.
                 If timeout, transaction is being cancelled.
-                Defaults to 5000.
+                Defaults to `5000`.
 
         Returns
         -------
             (List[dict])
             A list of all orders for a given symbol.
+
             [
                 {
                     'symbol': 'BTCUSDT',
@@ -746,6 +748,7 @@ class Trade:
             ]
         """
         return get(
+<<<<<<< HEAD:app/binance/api_calls/client.py
             self._url,
             'allOrders',
             key=self.__key,
@@ -756,6 +759,11 @@ class Trade:
             endTime=endTime,
             limit=limit,
             recvWindow=recvWindow
+=======
+            self._url, 'allOrders', key=self.__key, secret=self.__secret,
+            symbol=symbol.upper(), orderId=orderId, startTime=startTime,
+            endTime=endTime, limit=limit, recvWindow=recvWindow
+>>>>>>> 986454089557c36aaba37cb226b2cdd861415019:app/binance/src/binance/api_calls/client.py
         )
 
     def account(
@@ -775,33 +783,35 @@ class Trade:
         ----------
             recvWindow (int):
                 Time window in milliseconds to execute the order.
-                The value cannot be greater than 60000.
-                Defaults to 5000.
+                The value cannot be greater than `60000`.
+                Defaults to `5000`.
 
         Returns
         -------
-            (List[dict]):
-                A list of all trades within a given range if set or the past X
-                number of trades either specified or defaulted to 5000:-
-                [
-                    {
-                        'symbol': 'BTCUSDT',
-                        'id': 675286,
-                        'orderId': 2518667,
-                        'orderListId': -1,
-                        'price': '50000.00000000',
-                        'qty': '0.00019700',
-                        'quoteQty': '9.85000000',
-                        'commission': '0.00000000',
-                        'commissionAsset': 'USDT',
-                        'time': 1621011870116,
-                        'isBuyer': False,
-                        'isMaker': True,
-                        'isBestMatch': True
-                    }
-                ]
+            (List[dict])
+            A list of all trades within a given range if set or the past X
+            number of trades either specified or defaulted to `5000`
+
+            [
+                {
+                    'symbol': 'BTCUSDT',
+                    'id': 675286,
+                    'orderId': 2518667,
+                    'orderListId': -1,
+                    'price': '50000.00000000',
+                    'qty': '0.00019700',
+                    'quoteQty': '9.85000000',
+                    'commission': '0.00000000',
+                    'commissionAsset': 'USDT',
+                    'time': 1621011870116,
+                    'isBuyer': False,
+                    'isMaker': True,
+                    'isBestMatch': True
+                }
+            ]
         """
         return get(
+<<<<<<< HEAD:app/binance/api_calls/client.py
             self._url,
             'account',
             key=self.__key,
@@ -991,6 +1001,9 @@ class Trade:
             stopIcebergQty=stopIcebergQty,
             stopLimitTimeInForce=stopLimitTimeInForce,
             newOrderRespType=newOrderRespType,
+=======
+            self._url, 'account', key=self.__key, secret=self.__secret,
+>>>>>>> 986454089557c36aaba37cb226b2cdd861415019:app/binance/src/binance/api_calls/client.py
             recvWindow=recvWindow
         )
 
