@@ -1279,7 +1279,8 @@ class Trade:
                     'listClientOrderId': 'PLNwO0VkIhqTaOyTbjzMJt',
                     'transactionTime': 1622390178451,
                     'symbol': 'BTCUSDT',
-                    'orders': [
+                    'orders': 
+                    [
                         {
                             'symbol': 'BTCUSDT',
                             'orderId': 5730856,
@@ -1335,7 +1336,8 @@ class Trade:
                     'listClientOrderId': 'PLNwO0VkIhqTaOyTbjzMJt',
                     'transactionTime': 1622390178451,
                     'symbol': 'BTCUSDT',
-                    'orders': [
+                    'orders': 
+                    [
                         {
                             'symbol': 'BTCUSDT',
                             'orderId': 5730856,
