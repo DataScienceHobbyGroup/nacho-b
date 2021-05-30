@@ -70,20 +70,34 @@ class Binance:
         return f'<Binance: {self._url}>'
 
     @classmethod
-    def from_env_file(cls, path: str):
+    def from_env_file(cls, filename: str):
         """
         Load credentials from `.env` file.
 
         Parameters
         ----------
-            path (str):
+            filename (str):
                 Path to the `.env` file containing the credentials.
+
+        Raises
+        ------
+            FileNotFoundError
+                If provided path to `.env` file (`filename`) does not exist.
+
+            KeyError
+                If `API_KEY` and `API_SECRET` keys are not present in the
+                `.env` file (`filename`).
         """
         # Import standard modules
         from dotenv import load_dotenv
-        from os import getenv
+        from os import getenv, path
 
-        load_dotenv(path)
+        # Validate `path`
+        if not path.isfile(filename):
+            err = f"No such file or directory: '{filename}'"
+            raise FileNotFoundError(err)
+
+        load_dotenv(filename)
 
         key = getenv('API_KEY')
         secret = getenv('API_SECRET')
@@ -99,19 +113,29 @@ class Binance:
         return cls(key, secret, url)
 
     @classmethod
-    def from_json_file(cls, path: str):
+    def from_json_file(cls, filename: str):
         """
         Load credentials from a `JSON` file.
 
         Parameters
         ----------
-            path (str):
+            filename (str):
                 Path to the `JSON` file containing the credentials.
+
+        Raises
+        ------
+            FileNotFoundError
+                If provided path to `.json` format file (`filename`) does not
+                exist.
+
+            KeyError
+                If `API_KEY` and `API_SECRET` keys are not present in the
+                `.json` format file (`filename`).
         """
         # Import standard modules
         from json import load
 
-        with open(path) as file_obeject:
+        with open(filename) as file_obeject:
             credentials = load(file_obeject)
 
         key = credentials.get('API_KEY')

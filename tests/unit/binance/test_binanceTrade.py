@@ -15,8 +15,47 @@ Author: Vitali Lupusor
 # Import local modules
 from binance import Binance  # type: ignore
 
-dotenv = '.env'  # Relative path to `.env` file
-binance = Binance.from_env_file(dotenv)
+
+class TestBinanceTestOrder:
+    """TODO: Add description."""
+
+    def test_testOrder_with_noParameters(self, binance: Binance):
+        """
+        Test function without mandatory parameters.
+
+        Expect `TypeError`.
+        """
+        # Import third-party modules
+        from pytest import raises
+
+        with raises(TypeError) as typeError:
+            binance.trade.testOrder()
+
+            err = (
+                'testOrder() missing 3 required positional arguments: '
+                "'symbol', 'side', and 'type'"
+            )
+            err in str(typeError.value)
+
+    def test_buyTestOrder_with_validParameters(
+        self, binance: Binance, symbol: str, buySide: str, trade_type: str,
+        quantity: float
+    ):
+        """TODO: Add description."""
+        testOrder = binance.trade.testOrder(
+            symbol, buySide, trade_type, quantity=quantity
+        )
+        assert testOrder == {}
+
+    def test_sellTestOrder_with_validParameters(
+        self, binance: Binance, symbol: str, sellSide: str, trade_type: str,
+        quantity: float, recvWindow: int, timeInForce: str
+    ):
+        """TODO: Add description."""
+        testOrder = binance.trade.testOrder(
+            symbol, sellSide, trade_type, quantity, recvWindow=recvWindow
+        )
+        assert testOrder == {}
 
 
 class TestBinanceTrade:

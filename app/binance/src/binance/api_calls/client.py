@@ -301,8 +301,13 @@ class Trade:
 
         Returns
         -------
-            (dict):
-            TODO: Add description.
+            (dict)
+            An empty dictionary (`{}`) in case of success.
+
+        Raises
+        ------
+            requests.exceptions.RequestException
+                If incorrect parameters provided.
         """
         _timeInForce = timeInForce.upper() if timeInForce else None
         return post(

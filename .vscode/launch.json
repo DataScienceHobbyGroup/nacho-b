@@ -19,6 +19,14 @@
             "program": "app/main.py",
             "console": "integratedTerminal",
             "args": ["backtest", "--strategy", "dca", "--strategy_params", "10,24", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
+        },
+        {
+            "name": "Unit test",
+            "type": "python",
+            "request": "launch",
+            "program": "venv/bin/pytest",
+            "console": "integratedTerminal",
+            "args": ["tests/unit/binance/test_authentication.py"]
         }
     ]
 }

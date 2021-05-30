@@ -34,14 +34,62 @@ def binance() -> Binance:
 
 @fixture
 def symbol() -> str:
-    """Define the `symbol` used throughout test suit."""
+    """Define the `symbol` parameter used throughout test suit."""
     return 'bnbbtc'
 
 
 @fixture
 def badSymbol() -> str:
-    """Define an invalid `symbol` used throughout test suit."""
+    """Define invalid `symbol` parameter used throughout test suit."""
     return 'badSymbol'
+
+
+@fixture
+def limit() -> str:
+    """Define the `limit` parameter used throughout test suit."""
+    return 10
+
+
+@fixture
+def interval() -> str:
+    """Define the `interval` parameter used throughout test suit."""
+    return '1w'
+
+
+@fixture
+def buySide() -> str:
+    """TODO: Add description."""
+    return 'BUY'
+
+
+@fixture
+def sellSide() -> str:
+    """TODO: Add description."""
+    return 'SELL'
+
+
+@fixture
+def trade_type() -> str:
+    """TODO: Add description."""
+    return 'MARKET'
+
+
+@fixture
+def quantity() -> float:
+    """TODO: Add description."""
+    return 1.
+
+
+@fixture
+def recvWindow() -> int:
+    """TODO: Add description."""
+    return 2000
+
+
+@fixture
+def timeInForce() -> str:
+    """TODO: Add description."""
+    return 'GTC'
 
 
 @fixture

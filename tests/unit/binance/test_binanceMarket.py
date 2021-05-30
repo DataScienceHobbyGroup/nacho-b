@@ -115,13 +115,13 @@ class TestBinanceOrderBook:
     def test_orderBook_with_symbol(
         self, binance: Binance, orderBook_keys: List[str], symbol: str
     ):
-        """Test function with correct `symbol` and no provided `limit`."""
+        """Test function with correct `symbol` and default `limit`."""
         orderBook = binance.public.orderBook(symbol)
         assert orderBook_keys == sorted(orderBook.keys())
 
     def test_orderBook_with_badSymbol(self, binance: Binance, badSymbol: str):
         """
-        Test function with bad `symbol` and no provided `limit`.
+        Test function with bad `symbol` and default `limit`.
 
         Expect `RequestException`
         """
@@ -148,10 +148,11 @@ class TestBinanceOrderBook:
             err in str(badRequest.value)
 
     def test_orderBook_with_allParameters(
-        self, binance: Binance, orderBook_keys: List[str], symbol: str
+        self, binance: Binance, orderBook_keys: List[str], symbol: str,
+        limit: int
     ):
         """Test function with all correctly provided parameters."""
-        orderBook = binance.public.orderBook(symbol, 5)
+        orderBook = binance.public.orderBook(symbol, limit)
         assert orderBook_keys == sorted(orderBook.keys())
 
     # def test_orderBook_with_OutOfRangeLimit(
@@ -220,10 +221,10 @@ class TestBinanceRecentTrades:
             and trades_keys == sorted(next(iter(recentTrades)).keys())
 
     def test_recentTrades_with_allParameters(
-        self, binance: Binance, trades_keys: List[str], symbol: str
+        self, binance: Binance, trades_keys: List[str], symbol: str, limit: int
     ):
         """Test function with correctly provided parameters."""
-        recentTrades = binance.public.recentTrades(symbol, 10)
+        recentTrades = binance.public.recentTrades(symbol, limit)
         assert isinstance(recentTrades, list) \
             and trades_keys == sorted(next(iter(recentTrades)).keys())
 
@@ -288,10 +289,10 @@ class TestBinanceTradeLookup:
             and trades_keys == sorted(next(iter(tradeLookup)).keys())
 
     def test_tradeLookup_with_allParameters(
-        self, binance: Binance, trades_keys: List[str], symbol: str
+        self, binance: Binance, trades_keys: List[str], symbol: str, limit: int
     ):
         """Test function with all parameters correctly provided."""
-        tradeLookup = binance.public.tradeLookup(symbol, 1, 1)
+        tradeLookup = binance.public.tradeLookup(symbol, limit, 1)
         assert isinstance(tradeLookup, list) \
             and trades_keys == sorted(next(iter(tradeLookup)).keys())
 
@@ -330,7 +331,7 @@ class TestBinanceAggTrades:
         """
         Test function with invalid `symbol` and default optional parameters.
 
-        Expect `TypeError`.
+        Expect `RequestException`.
         """
         # Import standard modules
         from json import dumps
@@ -356,7 +357,8 @@ class TestBinanceAggTrades:
             err in str(badRequest.value)
 
     def test_aggTrades_with_validDataTimeTimestampParameters(
-        self, binance: Binance, aggTrades_keys: List[str], symbol: str
+        self, binance: Binance, aggTrades_keys: List[str], symbol: str,
+        limit: int
     ):
         """Test with valid `startTime` and `endTime` (datetime) parameters."""
         # Import standard modules
@@ -365,7 +367,7 @@ class TestBinanceAggTrades:
         startTime = datetime.now() - timedelta(days=1)
         endTime = startTime + timedelta(hours=1)
         aggTrades = binance.public.aggTrades(
-            symbol, startTime, endTime, limit=10
+            symbol, startTime, endTime, limit=limit
         )
         assert type(aggTrades) == list and (
             aggTrades == []
@@ -373,7 +375,8 @@ class TestBinanceAggTrades:
         )
 
     def test_aggTrades_with_validStringTimestampParameters(
-        self, binance: Binance, aggTrades_keys: List[str], symbol: str
+        self, binance: Binance, aggTrades_keys: List[str], symbol: str,
+        limit: int
     ):
         """Test with valid `startTime` and `endTime` (str) parameters."""
         # Import standard modules
@@ -384,7 +387,7 @@ class TestBinanceAggTrades:
         _startTime = str(startTime)
         _endTime = str(endTime)
         aggTrades = binance.public.aggTrades(
-            symbol, _startTime, _endTime, limit=10
+            symbol, _startTime, _endTime, limit=limit
         )
         assert type(aggTrades) == list and (
             aggTrades == []
@@ -392,7 +395,7 @@ class TestBinanceAggTrades:
         )
 
     def test_aggTrades_with_invalidTimestampParameters(
-        self, binance: Binance, symbol: str
+        self, binance: Binance, symbol: str, limit: int
     ):
         """
         Test with invalid `startTime` and `endTime` parameters.
@@ -411,13 +414,13 @@ class TestBinanceAggTrades:
         endTime = startTime + timedelta(hours=2)
 
         with raises(RequestException) as badRequest:
-            binance.public.aggTrades(symbol, startTime, endTime, limit=10)
+            binance.public.aggTrades(symbol, startTime, endTime, limit=limit)
             err = dumps(
                 {
                     "url": (
                         "https://testnet.binance.vision/api/v3/"
                         f"historicalTrades?symbol={symbol.upper()}"
-                        "&limit=10"
+                        f"&limit={limit}"
                         f"&startTime={datetime.timestamp(startTime)}"
                         f"&endTime={datetime.timestamp(endTime)}"
                     ),
@@ -432,15 +435,16 @@ class TestBinanceAggTrades:
             err in str(badRequest.value)
 
     def test_aggTrades_with_validFromIdParameter(
-        self, binance: Binance, aggTrades_keys: List[str], symbol: str
+        self, binance: Binance, aggTrades_keys: List[str], symbol: str,
+        limit: int
     ):
         """Test function with valid parameters."""
-        aggTrades = binance.public.aggTrades(symbol, fromId=1, limit=10)
+        aggTrades = binance.public.aggTrades(symbol, fromId=1, limit=limit)
         assert type(aggTrades) == list \
             and aggTrades_keys == sorted(next(iter(aggTrades)).keys())
 
     def test_aggTrades_with_invalidFromIdParameter(
-        self, binance: Binance, symbol: str
+        self, binance: Binance, symbol: str, limit: int
     ):
         """
         Test with invalid `fromId` parameter.
@@ -461,7 +465,7 @@ class TestBinanceAggTrades:
                     "url": (
                         "https://testnet.binance.vision/api/v3/"
                         f"historicalTrades?symbol={symbol.upper()}"
-                        "&limit=10&fromId=-1"
+                        f"&limit={limit}&fromId=-1"
                     ),
                     "status_code": 400,
                     "reason": "Bad Request",
@@ -481,9 +485,87 @@ class TestBinanceAggTrades:
 class TestBinanceKlines:
     """TODO: Add description."""
 
-    def test_klines(self, binance: Binance, symbol: str):
+    def test_klines_with_noParameters(self, binance: Binance):
+        """
+        Test function without mandatory parameters.
+
+        Expect `TypeError`.
+        """
+        # Import third-party modules
+        from pytest import raises
+
+        with raises(TypeError) as typeError:
+            binance.public.klines()
+            err = (
+                "klines() missing 2 required positional arguments: "
+                "'symbol' and 'interval'"
+            )
+            err in str(typeError.value)
+
+    def test_klines_with_invalidSymbol(
+        self, binance: Binance, badSymbol: str, interval: str
+    ):
+        """
+        Test with invalid `symbol` and default optional parameters.
+
+        Expect `RequestException`.
+        """
+        # Import standard modules
+        from json import dumps
+
+        # Import third-party modules
+        from pytest import raises
+        from requests.exceptions import RequestException
+
+        with raises(RequestException) as badRequest:
+            binance.public.klines(badSymbol, interval)
+            err = dumps(
+                {
+                    "url": (
+                        "https://testnet.binance.vision/api/v3/klines?"
+                        f"symbol={badSymbol.upper()}&interval={interval}"
+                        "&limit=500"
+                    ),
+                    "status_code": 400,
+                    "reason": "Bad Request",
+                    "message": '{"code":-1121,"msg":"Invalid symbol."}'
+                }
+            )
+            err in str(badRequest.value)
+
+    def test_klines_with_invalidInterval(self, binance: Binance, symbol: str):
+        """
+        Test with invalid `interval` and default optional parameters.
+
+        Expect `RequestException`.
+        """
+        # Import standard modules
+        from json import dumps
+
+        # Import third-party modules
+        from pytest import raises
+        from requests.exceptions import RequestException
+
+        with raises(RequestException) as badRequest:
+            binance.public.klines(symbol, '1W')
+            err = dumps(
+                {
+                    "url": (
+                        "https://testnet.binance.vision/api/v3/klines?"
+                        f"symbol={symbol.upper()}&interval=1W&limit=500"
+                    ),
+                    "status_code": 400,
+                    "reason": "Bad Request",
+                    "message": '{"code":-1121,"msg":"Invalid interval."}'
+                }
+            )
+            err in str(badRequest.value)
+
+    def test_klines_with_validParameters(
+        self, binance: Binance, symbol: str, interval: str, limit: int
+    ):
         """TODO: Add description."""
-        klines = binance.public.klines(symbol, interval='1d', limit=1)
+        klines = binance.public.klines(symbol, interval=interval, limit=limit)
         assert isinstance(klines, list) and len(next(iter(klines))) == 12
 
 
