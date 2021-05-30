@@ -1269,7 +1269,7 @@ class Trade:
 
         Returns
         -------
-            (List[dict]):
+            (dict):
                 A list of the oco orders for the given ID.
                 {
                     'orderListId': 4922,
@@ -1300,6 +1300,60 @@ class Trade:
             secret=self.__secret,
             orderListId=orderListId,
             origClientOrderId=origClientOrderId,
+            recvWindow=recvWindow
+        )
+
+    def openOrderList(
+        self,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+        Retrieves all open OCO orders.
+
+        Weight: 3
+        Data Source: Database
+
+        Other info
+        ----------
+
+        Parameters
+        ----------
+            recvWindow (int):
+                Number of milliseconds in which to complete the transaction.
+                If timeout, transaction is being cancelled.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (List[dict]):
+                A list of open oco orders.
+                {
+                    'orderListId': 4922,
+                    'contingencyType': 'OCO',
+                    'listStatusType': 'EXEC_STARTED',
+                    'listOrderStatus': 'EXECUTING',
+                    'listClientOrderId': 'PLNwO0VkIhqTaOyTbjzMJt',
+                    'transactionTime': 1622390178451,
+                    'symbol': 'BTCUSDT',
+                    'orders': [
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730856,
+                            'clientOrderId': 'aRVtxZ0ytCpU5vbRSagtS1'
+                        },
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730857,
+                            'clientOrderId': 'cNhPm3TRaLEmqTrAHXq1wL'
+                        }
+                    ]
+                }
+        """
+        return get(
+            self._url,
+            'openOrderList',
+            key=self.__key,
+            secret=self.__secret,
             recvWindow=recvWindow
         )
 
