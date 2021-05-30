@@ -33,6 +33,18 @@ def binance() -> Binance:
 
 
 @fixture
+def symbol() -> str:
+    """Define the `symbol` used throughout test suit."""
+    return 'bnbbtc'
+
+
+@fixture
+def badSymbol() -> str:
+    """Define an invalid `symbol` used throughout test suit."""
+    return 'badSymbol'
+
+
+@fixture
 def exchangeInfo_keys() -> List[str]:
     """Expect below keys as result of `exchengeInfo` API endpoint call."""
     return [
@@ -58,3 +70,9 @@ def trades_keys() -> List[str]:
     return [
         'id', 'isBestMatch', 'isBuyerMaker', 'price', 'qty', 'quoteQty', 'time'
     ]
+
+
+@fixture
+def aggTrades_keys() -> List[str]:
+    """Expect below keys as result of `aggTrades` API endpoint call."""
+    return ['M', 'T', 'a', 'f', 'l', 'm', 'p', 'q']
