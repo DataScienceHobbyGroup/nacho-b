@@ -994,7 +994,7 @@ class Trade:
             recvWindow=recvWindow
         )
 
-    def orderList(
+    def cancelOrderList(
         self,
         symbol: str,
         orderListId: Optional[float] = None,
@@ -1105,6 +1105,135 @@ class Trade:
             orderListId=orderListId,
             listClientOrderId=listClientOrderId,
             newClientOrderId=newClientOrderId,
+            recvWindow=recvWindow
+        )
+
+    def allOrderList(
+        self,
+        fromId: Optional[str] = None,
+        startTime: Optional[Union[str, date, datetime]] = None,
+        endTime: Optional[Union[str, date, datetime]] = None,
+        limit: Optional[int] = None,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+        Retrieves all OCO based on provided optional parameters.
+
+        Weight: 10
+        Data Source: Database
+
+        Other info
+        ----------
+
+        If ``fromID`` supplied, neither ``startTime`` or ``endTime`` can be
+        provided.
+
+        Parameters
+        ----------
+            fromId (Optional[str]):
+                The Id of the OCO to start from. Eg. fromId should be from
+                and order older than now.
+
+            startTime (Optional[Union[str, date, datetime]]):
+                TODO: confirm if time is expressed in ms
+                Optional: The point in history to get data from.
+
+            endTime (Optional[Union[str, date, datetime]]):
+                TODO: confirm if time is expressed in ms
+                Optional: The point in history to get data to.
+
+            limit (Optional[int]):
+                Optional: The number of trades to get starting from
+                now - ``limit``
+                Example: if ``limit`` is set to 10 the API will return
+                the 10 previous trades.
+
+            recvWindow (int):
+                Number of milliseconds in which to complete the transaction.
+                If timeout, transaction is being cancelled.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (List[dict]):
+                A list of all oco orders for the given parameters.
+                [
+                    {
+                        'orderListId': 4921,
+                        'contingencyType': 'OCO',
+                        'listStatusType': 'ALL_DONE',
+                        'listOrderStatus': 'ALL_DONE',
+                        'listClientOrderId': 'vngnEJ8Zdy8XF0lhwTgux3',
+                        'transactionTime': 1622389489116,
+                        'symbol': 'BTCUSDT',
+                        'orders':
+                        [
+                            {
+                                'symbol': 'BTCUSDT',
+                                'orderId': 5729322,
+                                'clientOrderId': 'J1Pe3pq2LAPCgPiffgDbSl'
+                            },
+                            {
+                                'symbol': 'BTCUSDT',
+                                'orderId': 5729323,
+                                'clientOrderId': 'JCgR0zZitgIf5PYXucdS3h'
+                            }
+                        ]
+                    },
+                    {
+                        'orderListId': 4922,
+                        'contingencyType': 'OCO',
+                        'listStatusType': 'ALL_DONE',
+                        'listOrderStatus': 'ALL_DONE',
+                        'listClientOrderId': 'PLNwO0VkIhqTaOyTbjzMJt',
+                        'transactionTime': 1622390178451,
+                        'symbol': 'BTCUSDT',
+                        'orders':
+                        [
+                            {
+                                'symbol': 'BTCUSDT',
+                                'orderId': 5730856,
+                                'clientOrderId': 'aRVtxZ0ytCpU5vbRSagtS1'
+                            },
+                            {
+                                'symbol': 'BTCUSDT',
+                                'orderId': 5730857,
+                                'clientOrderId': 'cNhPm3TRaLEmqTrAHXq1wL'
+                            }
+                        ]
+                    },
+                    {'orderListId': 4923,
+                        'contingencyType': 'OCO',
+                        'listStatusType': 'ALL_DONE',
+                        'listOrderStatus': 'ALL_DONE',
+                        'listClientOrderId': '7S91ZYqjQzKnylUO8IABGb',
+                        'transactionTime': 1622393416854,
+                        'symbol': 'BTCUSDT',
+                        'orders':
+                        [
+                            {
+                                'symbol': 'BTCUSDT',
+                                'orderId': 5739602,
+                                'clientOrderId': 'gFoIpd2GxKb1RJMvN7dSUc'
+                            },
+                            {
+                                'symbol': 'BTCUSDT',
+                                'orderId': 5739603,
+                                'clientOrderId': '8QzeCXJ1qFQdiDPiSczVRg'
+                            }
+                        ]
+                    }
+                ]
+        """
+        return get(
+            self._url,
+            'allOrderList',
+            key=self.__key,
+            secret=self.__secret,
+            fromId=fromId,
+            startTime=startTime,
+            endTime=endTime,
+            limit=limit,
             recvWindow=recvWindow
         )
 
