@@ -1237,5 +1237,71 @@ class Trade:
             recvWindow=recvWindow
         )
 
+    def orderList(
+        self,
+        orderListId: Optional[int] = None,
+        origClientOrderId: Optional[str] = None,
+        recvWindow: int = 5000
+    ) -> dict:
+        """
+        Retrieves a specific OCO based on provided optional parameters.
+
+        Weight: 2
+        Data Source: Database
+
+        Other info
+        ----------
+
+        Either ``orderListId`` or ``listClientOrderId`` must be provided.
+
+        Parameters
+        ----------
+            orderListId (Optional[int]):
+                The Id of the OCO order.
+
+            origClientOrderId (Optional[str]):
+                The corresponding order id generated at time of order.
+
+            recvWindow (int):
+                Number of milliseconds in which to complete the transaction.
+                If timeout, transaction is being cancelled.
+                Defaults to 5000.
+
+        Returns
+        -------
+            (List[dict]):
+                A list of the oco orders for the given ID.
+                {
+                    'orderListId': 4922,
+                    'contingencyType': 'OCO',
+                    'listStatusType': 'ALL_DONE',
+                    'listOrderStatus': 'ALL_DONE',
+                    'listClientOrderId': 'PLNwO0VkIhqTaOyTbjzMJt',
+                    'transactionTime': 1622390178451,
+                    'symbol': 'BTCUSDT',
+                    'orders': [
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730856,
+                            'clientOrderId': 'aRVtxZ0ytCpU5vbRSagtS1'
+                        },
+                        {
+                            'symbol': 'BTCUSDT',
+                            'orderId': 5730857,
+                            'clientOrderId': 'cNhPm3TRaLEmqTrAHXq1wL'
+                        }
+                    ]
+                }
+        """
+        return get(
+            self._url,
+            'orderList',
+            key=self.__key,
+            secret=self.__secret,
+            orderListId=orderListId,
+            origClientOrderId=origClientOrderId,
+            recvWindow=recvWindow
+        )
+
 
 del(Literal, Optional, date, datetime)
