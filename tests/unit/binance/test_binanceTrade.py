@@ -49,11 +49,12 @@ class TestBinanceTestOrder:
 
     def test_sellTestOrder_with_validParameters(
         self, binance: Binance, symbol: str, sellSide: str, trade_type: str,
-        quantity: float, recvWindow: int, timeInForce: str
+        quantity: float, recvWindow: int
     ):
         """TODO: Add description."""
         testOrder = binance.trade.testOrder(
-            symbol, sellSide, trade_type, quantity, recvWindow=recvWindow
+            symbol, sellSide, trade_type, quantity=quantity,
+            recvWindow=recvWindow
         )
         assert testOrder == {}
 

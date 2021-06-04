@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class FakeExchange(base_class.ExchangeBaseClass):
-    """A representitive exchange that behaves just like a real exchange would."""
+    """A representitive exchange that behaves like a real exchange would."""
 
     def __init__(self, queue, initial_investment=0):
         """TODO: Add function description."""
