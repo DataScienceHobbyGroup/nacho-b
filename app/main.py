@@ -107,6 +107,7 @@ def backtest(strategy, strategy_params, exchange, datasource, datasource_path):
         strategy_params, datasource_path
     )
 
+        output_ddca = strategy_ddca.run('app/strategies/ddca.ini')
 
 @click.command()
 @click.option('--strategy', help='Which strategy to use')

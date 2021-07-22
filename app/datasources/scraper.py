@@ -1,7 +1,6 @@
-"""TODO: Add file description."""
+"""Container for scraping logic"""
 
 # Import third-party modules
-import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 

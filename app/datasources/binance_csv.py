@@ -27,7 +27,7 @@ class binance_csv(base_class.datasource_base_class):
         ''' Initialise a Binance formatted CSV file
         arguments: path(str) - path to the CSV file.
         '''
-        self.data = pd.read_csv(path, index_col=0)
+        self.data = pd.read_csv(path)
         
         # reverse data set. data should be ordered from oldest to newest
         if self.REVERSE:
