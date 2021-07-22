@@ -10,7 +10,12 @@ import yfinance as yf
 
 
 class TickerScraper:
-    """Collection of functions to gather financial data."""
+    """
+    Collection of functions to gather financial data.
+
+    TODO: Currently this class uis written with a bias to Yahoo Finance
+    and could be improved to handle scraping data from other sites.
+    """
 
     YAHOO_FINANCE_TICKER_CLASS = 'Fw(600) C($linkColor)'
 
