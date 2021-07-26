@@ -19,7 +19,7 @@ class TickerScraper:
     """
     Collection of functions to gather financial data.
 
-    TODO: Currently this class uis written with a bias to Yahoo Finance
+    TODO: Currently this class is written with a bias to Yahoo Finance
     and could be improved to handle scraping data from other sites.
     """
 
