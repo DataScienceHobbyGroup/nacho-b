@@ -1,3 +1,7 @@
+"""
+Date: 2021
+Author: Barry Foye
+"""
 import datetime
 import time
 from typing import Dict
