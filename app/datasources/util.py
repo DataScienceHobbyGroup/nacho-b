@@ -1,11 +1,28 @@
 """
+Utility class to provide helper functions.
+
 Date: 2021
 Author: Barry Foye
 """
 import datetime
 import time
 from typing import Dict
-INTERVALS = ['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
+INTERVALS = [
+        'null',
+        '1m',
+        '2m',
+        '5m',
+        '15m',
+        '30m',
+        '60m',
+        '90m',
+        '1h',
+        '1d',
+        '5d',
+        '1wk',
+        '1mo',
+        '3mo'
+        ]
 TODAY_MINUS_SEVEN = 6
 TODAY_MINUS_SIXTY = 59
 TODAY_MINUS_SEVEN_THIRTY = 729
@@ -90,7 +107,22 @@ def date_range(interval: str = None) -> Dict:
 
 
 if __name__ == '__main__':
-  intervals = ['null', '1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']
-  for interval in intervals:
-    print(date_range(interval))
-  pass
+    intervals = [
+        'null',
+        '1m',
+        '2m',
+        '5m',
+        '15m',
+        '30m',
+        '60m',
+        '90m',
+        '1h',
+        '1d',
+        '5d',
+        '1wk',
+        '1mo',
+        '3mo'
+        ]
+    for interval in intervals:
+        print(date_range(interval))
+    pass

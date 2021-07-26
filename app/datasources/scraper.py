@@ -1,4 +1,9 @@
-"""Container for scraping logic"""
+"""
+Container for scraping logic.
+
+Date: 2021
+Author: Barry Foye
+"""
 
 # Import third-party modules
 import requests
