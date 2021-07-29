@@ -27,7 +27,16 @@ class Scraper:
             """Scrape a website for a given class."""
             if not (website and _class) is None:
                 try:
-                    page = requests.get(website)
+                    headers = {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; \
+                            x64; rv:90.0) Gecko/20100101 Firefox/90.0',
+                        'Accept': '*/*',
+                        'Accept-Encoding': 'gzip, deflate, br',
+                        'Connection': 'keep-alive'
+                    }
+                    page = requests.get(
+                        website,
+                        headers=headers)
                     soup = BeautifulSoup(page.content, 'html.parser')
                     _classes = soup.find_all(class_=_class)
                     tickers = [tick.text for tick in _classes]

@@ -5,14 +5,18 @@ Date: 2021
 Author: Barry Foye
 """
 
-from app.datasources.scraper import scraper
+try:
+    from app.datasources.scraper import scraper
+except ImportError:
+    import scraper as scraper
 import yfinance as yf
 import os
 import os.path
-# try:
-from app.datasources.util import util as util
-# except ImportError:
-#     import util as util
+import pandas as pd
+try:
+    from app.datasources.util import util as util
+except ImportError:
+    import util as util
 
 
 class TickerScraper:
@@ -33,12 +37,38 @@ class TickerScraper:
         return list_of_sites
 
     def scrape_tickers(self, list_of_sites=None):
-        """Scrape ticker symbols."""
+        """
+        Scrape ticker symbols.
+
+        TODO: Add logic to store any defunkt tickers
+        """
         list_of_tickers = []
         for s in list_of_sites:
             list_of_tickers.extend(
-                scraper.scrape(s, self.YAHOO_FINANCE_TICKER_CLASS)
+                scraper.Scraper.scrape(s, self.YAHOO_FINANCE_TICKER_CLASS)
             )
+        list_of_tickers = pd.Series(list_of_tickers)
+        # When the list of tickers are returned we need to check first if the
+        # ticker_list file already exists i.e. is this the first time the app
+        # is being run?
+        if not os.path.exists('./data/ticker_list.csv'):
+            # If the file doesn't exist, create it and then save
+            # the list to that file.
+            list_of_tickers.to_csv('./data/ticker_list.csv')
+        else:
+            # Else if it does exist, read it, right join the new/fresh list
+            # and then store it again by overwriting the file. This should
+            # handle and new symbols and remove any defunkt symbols.
+            old_ticker_list = pd.read_csv(
+                './data/ticker_list.csv',
+                names=['ticks'],
+                header=None
+            )
+            new_list = old_ticker_list.merge(
+                list_of_tickers.to_frame(name='ticks'),
+                how='right'
+            )
+            new_list.to_csv('./data/ticker_list.csv')
         return list_of_tickers
 
 # def get_ticker_data(self, list_of_tickers=None):
