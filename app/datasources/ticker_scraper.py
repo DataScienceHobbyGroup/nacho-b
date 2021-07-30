@@ -28,6 +28,8 @@ class TickerScraper:
     """
 
     YAHOO_FINANCE_TICKER_CLASS = 'Fw(600) C($linkColor)'
+    TICKER_LIST_FILE = './data/ticker_list.csv'
+    DEAD_TICKER_LIST_FILE = './data/dead_ticker_list.csv'
 
     def read_in_site_list(self, file=None):
         """Read in site list."""
@@ -48,78 +50,120 @@ class TickerScraper:
                 scraper.Scraper.scrape(s, self.YAHOO_FINANCE_TICKER_CLASS)
             )
         list_of_tickers = pd.Series(list_of_tickers)
+        if list_of_tickers.duplicated().sum() > 0:
+            print('duplicated')
         # When the list of tickers are returned we need to check first if the
         # ticker_list file already exists i.e. is this the first time the app
         # is being run?
-        if not os.path.exists('./data/ticker_list.csv'):
+        if not os.path.exists(self.TICKER_LIST_FILE):
             # If the file doesn't exist, create it and then save
             # the list to that file.
-            list_of_tickers.to_csv('./data/ticker_list.csv')
+            self.save_data(list_of_tickers, self.TICKER_LIST_FILE)
         else:
             # Else if it does exist, read it, right join the new/fresh list
             # and then store it again by overwriting the file. This should
-            # handle and new symbols and remove any defunkt symbols.
+            # handle any new symbols and remove any defunkt symbols.
             old_ticker_list = pd.read_csv(
-                './data/ticker_list.csv',
+                self.TICKER_LIST_FILE,
                 names=['ticks'],
-                header=None
+                header=None,
+                skiprows=[0]
             )
+            # Left exclusive join for items in the old list, not in the new
+            # list.
+            dead_tickers = old_ticker_list.merge(
+                list_of_tickers.to_frame(name='ticks'),
+                how='left',
+                indicator=True
+            )
+            dead_tickers = dead_tickers[dead_tickers['_merge'] == 'left_only']
+            # keep the ticks column
+            dead_tickers = dead_tickers['ticks']
+            # Right join for items in the old list that exist in the new
+            # list plus any new items.
             new_list = old_ticker_list.merge(
                 list_of_tickers.to_frame(name='ticks'),
                 how='right'
             )
-            new_list.to_csv('./data/ticker_list.csv')
-        return list_of_tickers
+            # Save the data.
+            self.save_data(new_list, self.TICKER_LIST_FILE)
+            self.save_data(
+                dead_tickers,
+                self.DEAD_TICKER_LIST_FILE,
+                mode='a',
+                header=False
+            )
 
-# def get_ticker_data(self, list_of_tickers=None):
-#     """Get scraped ticker data."""
-#     ticker_data = []
-#     for i in range(4):
-#         ticker_data.append(yf.Ticker(list_of_tickers[i]))
+    def save_data(self, data=None, file=None, mode='w', header=True):
+        """Save data to files."""
+        data.to_csv(file, mode=mode, header=header)
 
-# def save_ticker_data(self, data=None):
-#     """Save data for later."""
-#     for td in data:
-#         print(td.info)
-# TODO: for integration we need a way to store the scraped data
-# in our DB.
-# scrape tickers
-# def scrape_tickers(self, list_of_sites=None):
-#     list_of_tickers = []
-#     for s in list_of_sites:
-#         list_of_tickers.extend(scraper.scrape(
-# s, self.YAHOO_FINANCE_TICKER_CLASS))
-#     return list_of_tickers
-# download yahoo finance data
-
-    def download_yfinance_data(self, list_of_tickers=None):
+    def download_yfinance_data(self):
         """Download data using the yfinance library and stores to csv."""
-        for tick in list_of_tickers:
+        ticker_list = pd.read_csv(
+            self.TICKER_LIST_FILE,
+            skiprows=[0],
+            names=['ticks'],
+            header=None
+        )
+        ticker_list = ticker_list['ticks'].squeeze()
+        for idx, tick in ticker_list.items():
             a_ticker = yf.Ticker(tick)
             for interval in util.INTERVALS:
                 interval_ = util.date_range(interval)
-                if 'error' in interval_:
-                    break
-                elif 'period' in interval_:
-                    a_ticker.history(
-                        period=interval_['period'],
-                        interval=interval_['interval']
-                        ).to_csv(
-                            f'./data/{tick}_data_{interval_["interval"]}.csv',
-                            mode='w'
-                            )
-                elif 'start' in interval_ and 'end' in interval_:
-                    a_ticker.history(
-                        start=interval_['start'],
-                        end=interval_['end'],
-                        interval=interval_['interval']
-                        ).to_csv(
-                            f'./data/{tick}_data_{interval_["interval"]}.csv',
-                            mode='w'
-                            )
+                file = f'./data/{tick}_data_{interval_["interval"]}.csv'
+                if not os.path.exists(file):
+                    if 'error' in interval_:
+                        break
+                    elif 'period' in interval_:
+                        a_ticker.history(
+                            period=interval_['period'],
+                            interval=interval_['interval']
+                            ).to_csv(
+                                file,
+                                mode='w'
+                                )
+                    elif 'start' in interval_ and 'end' in interval_:
+                        a_ticker.history(
+                            start=interval_['start'],
+                            end=interval_['end'],
+                            interval=interval_['interval']
+                            ).to_csv(
+                                file,
+                                mode='w'
+                                )
+                    else:
+                        print('Some bogus shit going on here')
+                        break
                 else:
-                    print('Some bogus shit going on here')
-                    break
+                    if 'error' in interval_:
+                        break
+                    elif 'period' in interval_:
+                        current_data = pd.read_csv(
+                            file,
+                            header=None
+                        )
+                        new_data = a_ticker.history(
+                            period=interval_['period'],
+                            interval=interval_['interval']
+                            )
+                            # .to_csv(
+                            #     file,
+                            #     mode='a'
+                            #     )
+                        current_data.merge
+                    elif 'start' in interval_ and 'end' in interval_:
+                        a_ticker.history(
+                            start=interval_['start'],
+                            end=interval_['end'],
+                            interval=interval_['interval']
+                            ).to_csv(
+                                file,
+                                mode='a'
+                                )
+                    else:
+                        print('Some bogus shit going on here')
+                        break
                 util.rate_limiter()
 
     def validate_data(self, num_tickers: int = 0):
@@ -138,5 +182,5 @@ if __name__ == '__main__':
     ticker_scraper = TickerScraper()
     list_of_sites = ticker_scraper.read_in_site_list('resources/sites.txt')
     tickers = ticker_scraper.scrape_tickers(list_of_sites)
-    # ticker_scraper.download_yfinance_data(tickers)
+    # ticker_scraper.download_yfinance_data()
     # ticker_scraper.validate_data(len(tickers))
