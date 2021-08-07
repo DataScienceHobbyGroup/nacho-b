@@ -4,6 +4,7 @@ import click      # command line interface creation kit (click)
 import click_log  # connects the logger output to click output
 
 from datasources.binance_csv import binance_csv
+from datasources.binance_api import binance_api
 from strategies.moving_average import moving_average
 from strategies.dca import dca
 from exchanges.fake_exchange import fake_exchange
@@ -41,7 +42,8 @@ exchange_dict = {
 }
 
 datasource_dict = {
-    "binance_csv" : binance_csv
+    "binance_csv" : binance_csv,
+    "binance_api" : binance_api
 }
 
 @click.command()
