@@ -1,3 +1,4 @@
+import requests as r
 import pandas as pd
 import logging
 from curio import Queue, sleep
@@ -5,17 +6,23 @@ logger = logging.getLogger(__name__)
 
 from . import base_class
 
-class binance_csv(base_class.datasource_base_class):
+class binance_api(base_class.datasource_base_class):
     '''
-    This class opens and transforms data held in a CSV file
-    (binance format) and turns them into our standard format
+    This class grabs data from the binance API
+    and adds it to the queue for processing
     '''
 
-    #Whether or not to reverse the data
-    REVERSE = True
+    # Reversing the data isn't needed as it is already
+    # in the right order
+    REVERSE = False
     
     #Empty object to store the pandas dataframe
     data = []
+
+    # Config fields
+    SYMBOL = "BTCUSDT"
+    INTERVAL = "5m"
+    LIMIT = 500 # Default=500, max=1000
 
     #Position of the cursor
     cursor_position = 0
@@ -24,17 +31,26 @@ class binance_csv(base_class.datasource_base_class):
     q = []
 
     def __init__(self, path:str, q:Queue):
-        ''' Initialise a Binance formatted CSV file
-        arguments: path(str) - path to the CSV file.
-        '''
-        self.data = pd.read_csv(path, index_col=0)
+        ''' Connect to binance API and download the data'''
         
-        # reverse data set. data should be ordered from oldest to newest
+        #TODO: It would be good if the base URI could be configured on the CLI or via a config file instead of being hardcoded here.
+        base_uri = f"https://testnet.binance.vision/api/v3/klines?symbol={self.SYMBOL}&interval={self.INTERVAL}&limit={self.LIMIT}"
+        response = r.get(base_uri)
+        if not response.status_code == 200:
+            logger.critical(f"Error retrieving the binance data. {r.status_code}: {r.text}")
+            raise ValueError("Not able to get binance data from API.")
+        data = response.json()        
+        column_headings = ['Open Date','Open','High','Low','close','Volume BTC','Close time','Volume USDT','tradecount','Taker buy base asset volume','Taker buy quote asset volume','Ignore']
+        
+        self.data = pd.DataFrame(data, columns=column_headings)
+        self.data = self.data.apply(pd.to_numeric)
+
+        # reverse data set if needed. data should be ordered from oldest to newest
         if self.REVERSE:
             self.data = self.data.iloc[::-1]
 
         reverse = "Data was reversed." if self.REVERSE else "Data was not reversed."
-        logger.info(f"Read {self.data.shape} from {path} successfully. {reverse}")
+        logger.info(f"Read {self.data.shape} from {base_uri} successfully. {reverse}")
         self.q = q
 
     def new_data_available(self):
