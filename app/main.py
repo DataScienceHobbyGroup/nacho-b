@@ -4,6 +4,7 @@ import click      # command line interface creation kit (click)
 import click_log  # connects the logger output to click output
 
 from datasources.binance_csv import binance_csv
+from datasources.binance_api import binance_api
 from strategies.moving_average import moving_average
 from strategies.dca import dca
 from exchanges.fake_exchange import fake_exchange
@@ -41,7 +42,8 @@ exchange_dict = {
 }
 
 datasource_dict = {
-    "binance_csv" : binance_csv
+    "binance_csv" : binance_csv,
+    "binance_api" : binance_api
 }
 
 @click.command()
@@ -49,13 +51,14 @@ datasource_dict = {
 @click.option('--strategy_params', help='The parameters for the strategy, as a comma-separated list')
 @click.option('--exchange', help='Which exchange to use', type=click.Choice(exchange_dict.keys()))
 @click.option('--datasource', help='Which data source class to use', type=click.Choice(datasource_dict.keys()))
-@click.option('--datasource_path', help='The path to the datasource csv', 
-        type=click.Path(exists=True, file_okay=True, dir_okay=False, writable=False, readable=True, resolve_path=False, allow_dash=True, path_type=str))
+@click.option('--datasource_path', help='The path to the datasource csv or api endpoint', 
+        type=click.Path(exists=True, file_okay=True, dir_okay=False, writable=False, readable=True, resolve_path=False, allow_dash=True, path_type=str), required=False)
 @click_log.simple_verbosity_option(logger)
 def backtest(strategy, strategy_params, exchange, datasource, datasource_path):
-    if (strategy == None or strategy_params== None or exchange == None or datasource == None or datasource_path == None):
+    if (strategy == None or strategy_params== None or exchange == None or datasource == None):
         click.echo("Argument error. Run main.py backtest --help for info on the arguments")
     #We don't need to handle the case of these assignments failing because validaiton is handled for us by click
+    #TODO: --datasource_path is required for some strategies but not others - not sure how to get this working properly in click.
     strategy_object = strategy_dict[strategy]
     exchange_object = exchange_dict[exchange]
     datasrce_object = datasource_dict[datasource]

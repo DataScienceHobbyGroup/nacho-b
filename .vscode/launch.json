@@ -13,6 +13,14 @@
             "args": ["backtest", "--strategy", "moving_average", "--strategy_params", "10,50", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
         } ,
         {
+            "name": "Backtest moving average strategy with binance api",
+            "type": "python",
+            "request": "launch",
+            "program": "app/main.py",
+            "console": "integratedTerminal",
+            "args": ["backtest", "--strategy", "moving_average", "--strategy_params", "10,50", "--exchange", "fake_exchange", "--datasource", "binance_api"]
+        } ,        
+        {
             "name": "Backtest DCA strategy",
             "type": "python",
             "request": "launch",
