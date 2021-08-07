@@ -2,7 +2,7 @@ import curio
 import logging
 logger = logging.getLogger(__name__)
 
-from datasources.base_class import datasource_base_class as ds
+from datasources.base_class import DatasourceBaseClass as ds
 from common.common_classes import transaction as t
 
 class strategy_base_class():

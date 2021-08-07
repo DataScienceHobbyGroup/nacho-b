@@ -5,20 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Backtest moving average strategy",
+            "name": "Nacho Debug",
             "type": "python",
             "request": "launch",
             "program": "app/main.py",
-            "console": "integratedTerminal",
-            "args": ["backtest", "--strategy", "moving_average", "--strategy_params", "10,50", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
-        } ,
+            "console": "integratedTerminal"
+        },
         {
             "name": "Backtest moving average strategy with binance api",
             "type": "python",
             "request": "launch",
             "program": "app/main.py",
             "console": "integratedTerminal",
-            "args": ["backtest", "--strategy", "moving_average", "--strategy_params", "10,50", "--exchange", "fake_exchange", "--datasource", "binance_api"]
+            "args": [
+                "backtest",
+                "--strategy", "moving_average",
+                "--strategy_params", "10,50",
+                "--exchange", "fake_exchange",
+                "--datasource", "binance_api"]
         } ,        
         {
             "name": "Backtest DCA strategy",
@@ -26,7 +30,20 @@
             "request": "launch",
             "program": "app/main.py",
             "console": "integratedTerminal",
-            "args": ["backtest", "--strategy", "dca", "--strategy_params", "10,24", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
+            "args": ["backtest",
+                "--strategy", "dca",
+                "--strategy_params", "10,24",
+                "--exchange", "fake_exchange",
+                "--datasource", "binance_csv",
+                "--datasource_path",
+                "data/Binance_BTCUSDT_1h.csv"]
+        },
+        {
+            "name": "Single File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
     ]
 }

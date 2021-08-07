@@ -1,0 +1,45 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.pythonPath": "venv/bin/python",
+		"python.languageServer": "Pylance",
+		"python.linting.flake8Enabled": true,
+		"python.linting.pydocstyleEnabled": true,
+		"python.linting.mypyEnabled": true,
+		"python.testing.pytestEnabled": true,
+		"python.testing.pytestArgs": ["-v"]
+	},
+	"launch": {
+		"configurations": [
+			{
+				"name": "Backtest moving average strategy",
+				"type": "python",
+				"request": "launch",
+				"program": "app/main.py",
+				"console": "integratedTerminal",
+				"args": ["backtest", "--strategy", "moving_average", "--strategy_params", "10,50", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
+			} ,
+			{
+				"name": "Backtest DCA strategy",
+				"type": "python",
+				"request": "launch",
+				"program": "app/main.py",
+				"console": "integratedTerminal",
+				"args": ["backtest", "--strategy", "dca", "--strategy_params", "10,24", "--exchange", "fake_exchange", "--datasource", "binance_csv", "--datasource_path", "data/Binance_BTCUSDT_1h.csv"]
+			},
+			{
+				"name": "Unit test",
+				"type": "python",
+				"request": "launch",
+				"program": "venv/bin/pytest",
+				"console": "integratedTerminal",
+				"args": ["tests/unit/binance/test_authentication.py"]
+			}
+		],
+		"compounds": []
+	}
+}

@@ -1,11 +1,12 @@
 import pandas as pd
 import logging
 from curio import Queue, sleep
+
+from datasources import base_class
 logger = logging.getLogger(__name__)
 
-from . import base_class
 
-class binance_csv(base_class.datasource_base_class):
+class binance_csv(base_class.DatasourceBaseClass):
     '''
     This class opens and transforms data held in a CSV file
     (binance format) and turns them into our standard format
@@ -27,7 +28,7 @@ class binance_csv(base_class.datasource_base_class):
         ''' Initialise a Binance formatted CSV file
         arguments: path(str) - path to the CSV file.
         '''
-        self.data = pd.read_csv(path, index_col=0)
+        self.data = pd.read_csv(path)
         
         # reverse data set. data should be ordered from oldest to newest
         if self.REVERSE:

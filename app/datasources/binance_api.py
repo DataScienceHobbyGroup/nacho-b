@@ -2,11 +2,12 @@ import requests as r
 import pandas as pd
 import logging
 from curio import Queue, sleep
+
+from datasources import base_class
 logger = logging.getLogger(__name__)
 
-from . import base_class
 
-class binance_api(base_class.datasource_base_class):
+class binance_api(base_class.DatasourceBaseClass):
     '''
     This class grabs data from the binance API
     and adds it to the queue for processing
