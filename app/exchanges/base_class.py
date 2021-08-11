@@ -2,9 +2,10 @@
 
 
 from typing import List
+from abc import ABCMeta, abstractmethod
 
 
-class ExchangeBaseClass:
+class ExchangeBaseClass(metaclass=ABCMeta):
     """TODO: Add class description."""
 
     def __init__(self, queue, initial_investment=0):
@@ -15,14 +16,17 @@ class ExchangeBaseClass:
     # Access the command queue
     q: List = []
 
+    @abstractmethod
     async def buy(self, qty, value):
         """TODO: Add function description."""
         pass
 
+    @abstractmethod
     async def sell(self, qty, value):
         """TODO: Add function description."""
         pass
 
+    @abstractmethod
     async def run(self):
         """TODO: Add function description."""
         while True:

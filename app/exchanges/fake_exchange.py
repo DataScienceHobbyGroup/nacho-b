@@ -4,7 +4,7 @@
 import logging
 
 # Import local modules
-from . import base_class
+from exchanges import base_class
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +81,4 @@ class FakeExchange(base_class.ExchangeBaseClass):
         return self.current_balance
 
     async def run(self):
-        """TODO: Add function description."""
         await super().run()
-        await logger.info(trading_summary())
