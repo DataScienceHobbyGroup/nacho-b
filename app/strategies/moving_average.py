@@ -39,7 +39,7 @@ class moving_average(strategy):
         self.ma_slow_window = int(ParamsList[1])
         if len(ParamsList) > 2:
             self.price_open_close = bool(ParamsList[2])
-        logger.info(f"Parameters are: ma_fast = {self.ma_fast_window}"
+        logger.info(f"Parameters are: ma_fast = {self.ma_fast_window} "
                     f"ma_slow = {self.ma_slow_window} open = {self.price_open_close}")
 
     async def process_tick(self, tick):
