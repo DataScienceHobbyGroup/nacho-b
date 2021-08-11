@@ -46,7 +46,6 @@ class binance_csv(base_class.DatasourceBaseClass):
         self.q = q
 
     def new_data_available(self):
-        """Return true if there are more rows abailable, false if not."""
         return not(self.cursor_position >= len(self.data))
 
     async def run(self):
