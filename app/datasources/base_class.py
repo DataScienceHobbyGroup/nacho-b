@@ -19,12 +19,3 @@ class DatasourceBaseClass(metaclass=ABCMeta):
     def new_data_available(self) -> bool:
         """Return true if there are more rows abailable, false if not."""
         pass
-
-    @abstractmethod
-    def get_next_row(self) -> dict:
-        """
-        Return the next data row if one exists.
-
-        Throws an exception if not.
-        """
-        pass
