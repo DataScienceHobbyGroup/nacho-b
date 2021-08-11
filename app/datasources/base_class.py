@@ -1,4 +1,9 @@
-"""TODO: Add file description."""
+"""
+Abstract base class for datasource classes.
+
+An abstract base class for child classes to inherit from and extend the
+functions as needed.
+"""
 
 
 class DatasourceBaseClass:
