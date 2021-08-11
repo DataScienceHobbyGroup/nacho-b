@@ -45,24 +45,55 @@ exchange_dict = {
 }
 
 datasource_dict = {
-    "binance_csv" : binance_csv,
-    "binance_api" : binance_api
+    "binance_csv": binance_csv,
+    "binance_api": binance_api
 }
 
 
 @click.command()
-@click.option('--strategy', help='Which strategy to use', type=click.Choice(strategy_dict.keys(), case_sensitive=False))
-@click.option('--strategy_params', help='The parameters for the strategy, as a comma-separated list')
-@click.option('--exchange', help='Which exchange to use', type=click.Choice(exchange_dict.keys()))
-@click.option('--datasource', help='Which data source class to use', type=click.Choice(datasource_dict.keys()))
-@click.option('--datasource_path', help='The path to the datasource csv or api endpoint', 
-        type=click.Path(exists=True, file_okay=True, dir_okay=False, writable=False, readable=True, resolve_path=False, allow_dash=True, path_type=str), required=False)
+@click.option(
+    '--strategy',
+    help='Which strategy to use',
+    type=click.Choice(list(strategy_dict.keys()), case_sensitive=False)
+)
+@click.option(
+    '--strategy_params',
+    help='The parameters for the strategy, as a comma-separated list'
+)
+@click.option(
+    '--exchange',
+    help='Which exchange to use',
+    type=click.Choice(list(exchange_dict.keys()))
+)
+@click.option(
+    '--datasource',
+    help='Which data source class to use',
+    type=click.Choice(list(datasource_dict.keys()))
+)
+@click.option(
+    '--datasource_path',
+    help='The path to the datasource csv or api endpoint',
+    type=click.Path(
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=False,
+        allow_dash=True,
+        path_type=str
+    ),
+    required=False
+)
 @click_log.simple_verbosity_option(logger)
 def backtest(strategy, strategy_params, exchange, datasource, datasource_path):
-    if (strategy == None or strategy_params== None or exchange == None or datasource == None):
+    """TODO: Add description."""
+    if (strategy is None or strategy_params is None or exchange is None or datasource is None):
         click.echo("Argument error. Run main.py backtest --help for info on the arguments")
-    #We don't need to handle the case of these assignments failing because validaiton is handled for us by click
-    #TODO: --datasource_path is required for some strategies but not others - not sure how to get this working properly in click.
+    # We don't need to handle the case of these assignments failing because validaiton is handled
+    # for us by click.
+    # TODO: --datasource_path is required for some strategies but not others - not sure how to get
+    # this working properly in click.
     strategy_object = strategy_dict[strategy]
     exchange_object = exchange_dict[exchange]
     datasrce_object = datasource_dict[datasource]
@@ -72,7 +103,8 @@ def backtest(strategy, strategy_params, exchange, datasource, datasource_path):
         strategy_params, datasource_path
     )
 
-    #output_ddca = strategy_ddca.run('app/strategies/ddca.ini')
+    # output_ddca = strategy_ddca.run('app/strategies/ddca.ini')
+
 
 @click.command()
 @click.option('--strategy', help='Which strategy to use')
