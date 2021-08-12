@@ -1,4 +1,38 @@
+version: "3.3"
+
 services:
+  vault:
+    image: vault
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    volumes:
+      - ./vault/certificates:/vault/certificates
+      - ./vault/config:/vault/config
+      - ./vault/data:/vault/data
+      - ./vault/file:/vault/file
+      - ./vault/logs:/vault/logs
+    cap_add:
+      - IPC_LOCK
+    environment:
+      - GODEBUG="x509ignorecn=0"
+      - VAULT_ADDR=http://127.0.0.1:8200
+    entrypoint: vault server -config=/vault/config/config.hcl
+
+  postgres:
+    image: postgres
+    container_name: data_model
+    restart: always
+    env_file:
+      - ./postgres/.env
+    ports:
+      - '5432:5432'
+    volumes: 
+      - ./postgres/data:/var/lib/postgresql/data
+    depends_on:
+      - vault
+
   yahoo_data_bot:
     build: "./app/datasources/ ."
     volumes:

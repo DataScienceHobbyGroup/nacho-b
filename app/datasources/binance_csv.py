@@ -4,7 +4,7 @@ Author: Peter Ooms.
 TODO: Add description
 """
 
-from typing import List
+# from typing import List
 import pandas as pd
 import logging
 from curio import Queue, sleep
@@ -13,7 +13,7 @@ from datasources import base_class
 logger = logging.getLogger(__name__)
 
 
-class binance_csv(base_class.DatasourceBaseClass):
+class BinanceCSV(base_class.DatasourceBaseClass):
     """
     Binance CSV data interaction class.
 
@@ -30,10 +30,10 @@ class binance_csv(base_class.DatasourceBaseClass):
     # Position of the cursor
     cursor_position = 0
 
-    # Queue on which to dump data
-    q: List = []
+    # # Queue on which to dump data
+    # q: List = []
 
-    def __init__(self, path: str, q: Queue):
+    def __init__(self, path: str, q: Queue = []):
         """Initialise a Binance formatted CSV file arguments: path(str) - path to the CSV file."""
         self.data = pd.read_csv(path)
 

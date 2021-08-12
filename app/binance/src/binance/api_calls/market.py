@@ -495,4 +495,4 @@ class MarketData:
         return get(self._url, 'ticker/bookTicker', symbol=symbol)
 
 
-del(Any, Dict, List, Optional, Union, date)
+del(Any, Dict, List, Optional, Union, date)  # type: ignore

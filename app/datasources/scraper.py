@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 class Scraper:
     """
-    A class is used to scrape data and information from websites.
+    Scraper class is used to scrape data and information from websites.
 
     It is a container for any bespoke logic related to a particular site
     and the nuances for that site.

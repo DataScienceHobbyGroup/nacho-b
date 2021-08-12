@@ -22,7 +22,7 @@ from typing import List
 logger = logging.getLogger(__name__)
 
 
-class ddca:
+class DDCA:
     """
     A dynamic DCA strategy.
 

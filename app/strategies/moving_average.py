@@ -1,7 +1,7 @@
 """
-Author: Peter Ooms.
-
 Simple moving average strategy based on crossover.
+
+Author: Peter Ooms.
 """
 
 # import curio

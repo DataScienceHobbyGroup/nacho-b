@@ -80,8 +80,7 @@ class binance_api(base_class.DatasourceBaseClass):
                     f"from {base_uri} successfully. {reverse}")
         self.q = q
 
-    def new_data_available(self):
-        """Return true if there are more rows abailable, false if not."""
+    def new_data_available(self):  # noqa: D102
         return not(self.cursor_position >= len(self.data))
 
     async def run(self):

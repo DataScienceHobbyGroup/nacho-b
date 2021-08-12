@@ -5,10 +5,10 @@ import logging    # python standard logging library
 import click      # command line interface creation kit (click)
 import click_log  # connects the logger output to click output
 
-from datasources.binance_csv import binance_csv
+from datasources.binance_csv import BinanceCSV
 from datasources.binance_api import binance_api
 from strategies.moving_average import moving_average
-from strategies.dca import dca
+from strategies.dca import DCA
 from exchanges.fake_exchange import FakeExchange
 
 logging.basicConfig(
@@ -37,16 +37,16 @@ LOGO = '''
 # this, but this works for now.
 strategy_dict = {
     "moving_average": moving_average,
-    "dca": dca
+    "dca": DCA,
 }
 
 exchange_dict = {
-    "fake_exchange": FakeExchange
+    "fake_exchange": FakeExchange,
 }
 
 datasource_dict = {
-    "binance_csv": binance_csv,
-    "binance_api": binance_api
+    "binance_csv": BinanceCSV,
+    "binance_api": binance_api,
 }
 
 
@@ -54,7 +54,7 @@ datasource_dict = {
 @click.option(
     '--strategy',
     help='Which strategy to use',
-    type=click.Choice(list(strategy_dict.keys()), case_sensitive=False)
+    type=click.Choice(strategy_dict.keys(), case_sensitive=False)
 )
 @click.option(
     '--strategy_params',
@@ -63,7 +63,7 @@ datasource_dict = {
 @click.option(
     '--exchange',
     help='Which exchange to use',
-    type=click.Choice(list(exchange_dict.keys()))
+    type=click.Choice(exchange_dict.keys())
 )
 @click.option(
     '--datasource',
@@ -88,12 +88,24 @@ datasource_dict = {
 @click_log.simple_verbosity_option(logger)
 def backtest(strategy, strategy_params, exchange, datasource, datasource_path):
     """TODO: Add description."""
-    if (strategy is None or strategy_params is None or exchange is None or datasource is None):
-        click.echo("Argument error. Run main.py backtest --help for info on the arguments")
-    # We don't need to handle the case of these assignments failing because validaiton is handled
-    # for us by click.
-    # TODO: --datasource_path is required for some strategies but not others - not sure how to get
-    # this working properly in click.
+    if any(
+        [
+            strategy is None,
+            strategy_params is None,
+            exchange is None,
+            datasource is None
+        ]
+    ):
+        click.echo(
+            (
+                'Argument error. Run main.py backtest --help for info on the '
+                'arguments'
+            )
+        )
+    # We don't need to handle the case of these assignments failing because
+    # validaiton is handled for us by click
+    # TODO: --datasource_path is required for some strategies but not others
+    # - not sure how to get this working properly in click.
     strategy_object = strategy_dict[strategy]
     exchange_object = exchange_dict[exchange]
     datasrce_object = datasource_dict[datasource]
