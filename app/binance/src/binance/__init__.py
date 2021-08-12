@@ -55,6 +55,7 @@ class Binance:
 
             url (str):
                 Server URL where the requests will be sent to.
+
         """
         # Import standard modules
         from os import getenv
